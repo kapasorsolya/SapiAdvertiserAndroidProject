@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">SapiAdveriserAndroidProject</string>
+    <string name="FirstName">First Name</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="app_name1">Sapi Advertiser</string>
+    <string name="sign_in">Sign In</string>
+    <string name="to_Registration">Do you have an account? If not Sign Up</string>
+    <string name="title">Title</string>
+    <string name="short_description">Short Description</string>
+    <string name="long_description">Long Description</string>
+    <string name="location_text">Location Text</string>
+</resources>

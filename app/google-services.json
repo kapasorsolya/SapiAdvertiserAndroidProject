@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "148099826058",
+    "firebase_url": "https://sapiadveriser.firebaseio.com",
+    "project_id": "sapiadveriser",
+    "storage_bucket": "sapiadveriser.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148099826058:android:9d2d03d473932e29",
+        "android_client_info": {
+          "package_name": "com.example.orsolya.sapiadveriserandroidproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148099826058-qq6jj1k6beeaqj7i8sd5l6d60eqjuc64.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqSyc65R0_0pSUseTqiapTo0Q459yV4N0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

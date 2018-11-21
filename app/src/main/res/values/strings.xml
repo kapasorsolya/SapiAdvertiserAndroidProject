@@ -12,4 +12,11 @@
     <string name="short_description">Short Description</string>
     <string name="long_description">Long Description</string>
     <string name="location_text">Location Text</string>
+    <string name="title_activity_listing_advertisment">ListingAdvertismentActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_advertisement">AdvertisementActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_add">" New Ad"</string>
+    <string name="title_user">User</string>
 </resources>

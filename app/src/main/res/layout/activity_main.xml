@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--<fragment
-        android:id="@+id/fragment_container"
-        android:name="com.example.orsolya.sapiadveriserandroidproject.AddAdvertisementFragmenttFragment"
-        android:layout_width="341dp"
-        android:  <fragment
-t="514dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />-->
     <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

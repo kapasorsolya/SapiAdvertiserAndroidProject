@@ -1,59 +1,44 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import static android.support.constraint.Constraints.TAG;
 
+public class ListingAdsFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ListingAdsFragment extends Fragment {
-/*
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                        return true;
-                case R.id.navigation_dashboard:
-                    return true;
-                case R.id.navigation_notifications:
-                    return true;
-            }
-            return false;
-        }
-    };
-*/
+    private  BottomNavigationView mOnNavigationItemSelectedListener;
+    private  BottomNavigationView mOnNavigationItemSelectedListener1;
+
+
     //vars
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
-
-
     public ListingAdsFragment() {
-        // Required empty public constructor
     }
 
     public  void setImage(String url, String name) {
@@ -64,14 +49,18 @@ public class ListingAdsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
 
-       final View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
+        mOnNavigationItemSelectedListener = (BottomNavigationView) rootView.findViewById( R.id.navigation );
+        mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener( this );
 
-       /* BottomNavigationView navigation = (BottomNavigationView) rootView.findViewById( R.id.navigation );
-        navigation.setOnNavigationItemSelectedListener( mOnNavigationItemSelectedListener );*/
+        initializeRecyclerView(rootView);
 
+        return rootView;
 
+    }
+
+    private void initializeRecyclerView(View rootView) {
         // 1. get a reference to recyclerView
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById( R.id.recyclerv_view );
 
@@ -92,19 +81,56 @@ public class ListingAdsFragment extends Fragment {
         setImage( "https://i.imgur.com/ZcLLrkY.jpg" , "Washington" );
 
 
-        
+
         // 3. create an adapter
         RecyclerViewAdapter mAdapter = new RecyclerViewAdapter( mNames, mImageUrls );
         // 4. set adapter
         recyclerView.setAdapter( mAdapter );
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
-
-
-        return rootView;
-
     }
 
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        displayView(item.getItemId());
+        return true;
+    }
+
+   @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected( item );
+    }
+
+    public void displayView(int viewId) {
+
+        Fragment fragment = null;
+
+        switch (viewId) {
+            case R.id.navigation_add:
+                fragment = new AddAdvertisementFragment();
+                Toast.makeText( getContext(),"ADD button",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.navigation_home:
+                fragment = new AddAdvertisementFragment();
+                Toast.makeText( getContext(),"HOME button",Toast.LENGTH_SHORT).show();
+                 break;
+            case R.id.navigation_users:
+                fragment=new AddAdvertisementFragment();
+                Toast.makeText( getContext(),"USERS button",Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+
+        if (fragment != null) {
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_container, fragment);
+            ft.commit();
+        }
+
+
+
+
+    }
 }
 
 

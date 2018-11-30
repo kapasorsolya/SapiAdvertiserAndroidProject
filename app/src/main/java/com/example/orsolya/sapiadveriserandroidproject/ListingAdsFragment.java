@@ -44,6 +44,9 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
     public  void setImage(String url, String name) {
         mImageUrls.add( url );
         mNames.add( name );
+
+        mImageUrls.add("gs://sapiadveriser.appspot.com/imageName1.jpg");
+        mNames.add( "alma" );
     }
 
     @Override
@@ -123,8 +126,12 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
         if (fragment != null) {
             FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_container, fragment);
-            ft.commit();
+            if(ft!=null)
+            {
+                ft.replace(R.id.fragment_container, fragment);
+                ft.commit();
+            }
+
         }
 
 

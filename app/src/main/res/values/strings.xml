@@ -19,4 +19,5 @@
     <string name="title_home">Home</string>
     <string name="title_add">" New Ad"</string>
     <string name="title_user">User</string>
+    <string name="add">ADD</string>
 </resources>

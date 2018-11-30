@@ -1,46 +1,74 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static android.content.Context.MODE_PRIVATE;
-import static android.support.constraint.Constraints.TAG;
-import static com.google.android.gms.flags.impl.SharedPreferencesFactory.getSharedPreferences;
+import static com.google.firebase.storage.StorageReference.*;
 
 
 public class AddAdvertisementFragment extends Fragment {
 
+    private static final int RESULT_OK =1 ;
     private EditText Title;
     private EditText ShortDescription;
     private EditText LongDescription;
     private EditText PhoneNumber;
     private EditText Location;
+    private ImageView mImageView;
+
+    private String mTitle;
+    private String  mShortDescription;
+    private String mLongDescription;
+    private String mPhoneNumber;
+    private String mLocation;
+
+    private Uri filePath;
+    //TODO
+    //images name
+
+
+    private Button AddAdvertisementButton;
+
+    private static final int PICK_IMAGE_REQUEST = 71;
+
+
 
 
     //TODO
     //images is meg atvenni es beszurni
 
-    private static final String MY_PREFS_NAME ="AddAdvertisement" ;
 
 
     // Container Activity must implement this interface
@@ -60,32 +88,11 @@ public class AddAdvertisementFragment extends Fragment {
         LongDescription = v.findViewById( R.id.txt_long_description );
         PhoneNumber = v.findViewById( R.id.txt_phone_number );
         Location = v.findViewById( R.id.txt_location_text );
+        AddAdvertisementButton = v.findViewById( R.id.add_new_ad_button );
+        mImageView = v.findViewById( R.id.imageView );
 
     }
 
-    private void addToSharedPreferences(){
-        SharedPreferences preferences =this.getActivity().getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("title", Title.getText().toString());
-        editor.putString("shortDescription",ShortDescription.getText().toString());
-        editor.putString("longDescription",LongDescription.getText().toString());
-        editor.putString("phoneNumber",PhoneNumber.getText().toString());
-        editor.putString("location",Location.getText().toString());
-        editor.apply();
-    }
-
-    private void getSharedPreferences() {
-        SharedPreferences prefs = this.getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
-        String restoredText = prefs.getString("text", null);
-        if (restoredText != null) {
-            String titleValue = prefs.getString("title", null);
-            String  shortDesciptionValue= prefs.getString("shortDescription", null);
-            String longDesciptionVallue=prefs.getString("longDescription", null);
-            String phoneNumberValue=prefs.getString("phoneNumber", null);
-            String locationValue = prefs.getString( "location",null );
-
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,11 +100,80 @@ public class AddAdvertisementFragment extends Fragment {
 
         View rootView =inflater.inflate( R.layout.fragment_add_advertisement, container, false );
         getNewData( rootView );
-        addToSharedPreferences();
+        setListeners();
+        AddAdvertisementButton.setEnabled(false);
         return rootView;
 
     }
 
+
+    public void setListeners(){
+        AddAdvertisementButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText( getContext(),"Beszuras megtortent az adatbazisban",Toast.LENGTH_SHORT ).show();
+
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference ref = database.getReference("advertisement");
+                //DatabaseReference newref = database.getReference("sapiadveriser");
+
+                DatabaseReference newPostRef = ref.push();
+                ArrayList<String> images = new ArrayList<>( );
+                images.add(null);
+                Advertisement post=new Advertisement("1",mLocation,mLongDescription,mShortDescription,
+                        mPhoneNumber,false,mTitle,images );
+                newPostRef.setValue(post);
+
+            }
+        } );
+
+        Title.addTextChangedListener(inputTextWatcher);
+        PhoneNumber.addTextChangedListener( inputTextWatcher);
+        LongDescription.addTextChangedListener( inputTextWatcher);
+        Location.addTextChangedListener( inputTextWatcher );
+        ShortDescription.addTextChangedListener( inputTextWatcher);
+    }
+
+
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+
+    }
+
+
+
+
+    TextWatcher inputTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+             mTitle=Title.getText().toString();
+             mShortDescription=ShortDescription.getText().toString();
+             mLongDescription= LongDescription.getText().toString();
+             mPhoneNumber=PhoneNumber.getText().toString();
+             mLocation=Location.getText().toString();
+
+            if(!mTitle.isEmpty() && !mShortDescription.isEmpty() && !mLongDescription.isEmpty() && !mPhoneNumber.isEmpty() &&
+                    !mLocation.isEmpty())
+            {
+                AddAdvertisementButton.setEnabled(true);
+
+            }
+        }
+    };
 
 
 

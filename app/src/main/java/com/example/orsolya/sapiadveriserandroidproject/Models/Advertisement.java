@@ -1,21 +1,20 @@
-package com.example.orsolya.sapiadveriserandroidproject;
+package com.example.orsolya.sapiadveriserandroidproject.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Advertisement implements Serializable {
-    private Integer Identifier;
-    private String EmailAddress;
+    private String Identifier;
     private String  Location;
     private String LongDescription;
     private String ShortDescription;
     private String PhoneNumber;
     private boolean Reported;
     private String Title;
-    private String Image;
+    private ArrayList<String>Image;
 
-    public Advertisement(Integer identifier, String emailAddress, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image) {
+    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, ArrayList<String> image) {
         Identifier = identifier;
-        EmailAddress = emailAddress;
         Location = location;
         LongDescription = longDescription;
         ShortDescription = shortDescription;
@@ -25,20 +24,12 @@ public class Advertisement implements Serializable {
         Image = image;
     }
 
-    public Integer getIdentifier() {
+    public String getIdentifier() {
         return Identifier;
     }
 
-    public void setIdentifier(Integer identifier) {
+    public void setIdentifier(String identifier) {
         Identifier = identifier;
-    }
-
-    public String getEmailAddress() {
-        return EmailAddress;
-    }
-
-    public void setEmailAddress(String emailAddress) {
-        EmailAddress = emailAddress;
     }
 
     public String getLocation() {
@@ -89,11 +80,11 @@ public class Advertisement implements Serializable {
         Title = title;
     }
 
-    public String getImage() {
+    public ArrayList<String> getImage() {
         return Image;
     }
 
-    public void setImage(String image) {
+    public void setImage(ArrayList<String> image) {
         Image = image;
     }
 
@@ -101,14 +92,13 @@ public class Advertisement implements Serializable {
     public String toString() {
         return "Advertisement{" +
                 "Identifier=" + Identifier +
-                ", EmailAddress='" + EmailAddress + '\'' +
                 ", Location='" + Location + '\'' +
                 ", LongDescription='" + LongDescription + '\'' +
                 ", ShortDescription='" + ShortDescription + '\'' +
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", Reported=" + Reported +
                 ", Title='" + Title + '\'' +
-                ", Image='" + Image + '\'' +
+                ", Image=" + Image +
                 '}';
     }
 }

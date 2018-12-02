@@ -103,7 +103,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@color/colorPrimary"
-        android:text="Get Verification Code"
+        android:text="@string/verification_code"
         android:textAllCaps="false"
         android:textColor="@color/whitecolor"
         android:visibility="invisible"

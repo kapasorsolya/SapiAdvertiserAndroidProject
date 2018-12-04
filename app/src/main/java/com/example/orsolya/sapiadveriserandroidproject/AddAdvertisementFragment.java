@@ -120,8 +120,8 @@ public class AddAdvertisementFragment extends Fragment {
 
                 DatabaseReference newPostRef = ref.push();
                 ArrayList<String> images = new ArrayList<>( );
-                images.add(null);
-                Advertisement post=new Advertisement("1",mLocation,mLongDescription,mShortDescription,
+                images.add("https://firebasestorage.googleapis.com/v0/b/sapiadveriser.appspot.com/o/imageName1.jpg?alt=media&token=ba8765c3-f04a-4a10-af2a-faa7c6bbea16" );
+                Advertisement post=new Advertisement("2",mLocation,mLongDescription,mShortDescription,
                         mPhoneNumber,false,mTitle,images );
                 newPostRef.setValue(post);
 

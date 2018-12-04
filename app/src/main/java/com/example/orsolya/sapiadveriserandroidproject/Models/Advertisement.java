@@ -11,7 +11,10 @@ public class Advertisement implements Serializable {
     private String PhoneNumber;
     private boolean Reported;
     private String Title;
-    private ArrayList<String>Image;
+    private ArrayList<String> Image;
+
+    public Advertisement() {
+    }
 
     public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, ArrayList<String> image) {
         Identifier = identifier;
@@ -86,6 +89,10 @@ public class Advertisement implements Serializable {
 
     public void setImage(ArrayList<String> image) {
         Image = image;
+    }
+
+    public String getFirstImage(){
+        return Image.get( 0 );
     }
 
     @Override

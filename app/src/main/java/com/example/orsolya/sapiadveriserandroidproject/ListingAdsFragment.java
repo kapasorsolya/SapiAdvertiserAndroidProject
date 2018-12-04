@@ -2,28 +2,32 @@ package com.example.orsolya.sapiadveriserandroidproject;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static android.support.constraint.Constraints.TAG;
 
@@ -38,6 +42,12 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
 
+    //
+    FirebaseDatabase database ;
+    DatabaseReference  myRef;
+
+    List<Advertisement> list;
+
     public ListingAdsFragment() {
     }
 
@@ -45,8 +55,8 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
         mImageUrls.add( url );
         mNames.add( name );
 
-        mImageUrls.add("gs://sapiadveriser.appspot.com/imageName1.jpg");
-        mNames.add( "alma" );
+        //mImageUrls.add("gs://sapiadveriser.appspot.com/imageName1.jpg");
+        //mNames.add( "alma" );
     }
 
     @Override
@@ -73,7 +83,46 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
         // this is data fro recycler view
         Log.d( TAG, "initImageBitmaps: preparing bitmaps." );
 
-        setImage( "https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg" ,"Havasu Falls" );
+        //getImagesForTheList();
+
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("message");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                list = new ArrayList<Advertisement>();
+                for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
+
+                    Advertisement value = dataSnapshot1.getValue(Advertisement.class);
+                    Advertisement ads = new Advertisement();
+                    String title = value.getTitle();
+                    mNames.add( title );
+                    List <String> image = value.getImage();
+                   // ads.setTitle(title);
+                    //ads.setImage( (ArrayList<String>) image );
+                    mImageUrls.add(image.get( 0 ));
+                    Log.d("mUmageUrl", mImageUrls.get(mImageUrls.size()));
+                    Log.d("mNames", mNames.get( mNames.size() ));
+                    //list.add(ads);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Hello", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
+
         setImage(  "https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim" );
         setImage( "https://i.redd.it/qn7f9oqu7o501.jpg" , "Portugal" );
         setImage(  "https://i.redd.it/j6myfqglup501.jpg" , "Rocky Mountain National Park" );
@@ -92,6 +141,81 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
     }
+
+    private void getImagesForTheList() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myFirebaseRef = database.getReference( "advertisement" );
+
+        Query queryRef = myFirebaseRef.orderByChild( "image" );
+
+
+        queryRef.addChildEventListener( new ChildEventListener() {
+            String imageUrl = null;
+            String Name = null;
+
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChild) {
+                System.out.println( dataSnapshot.getValue() );
+                Map<String, Object> mapValue = (Map<String, Object>) dataSnapshot.getValue();
+/*
+                DataSnapshot contactSnapshot = dataSnapshot.child( "advertisement" );
+                Iterable<DataSnapshot> contactChildren = contactSnapshot.getChildren();
+                int i = 0;
+                for (DataSnapshot contact : contactChildren) {
+                    Advertisement c = contact.getValue( Advertisement.class );
+                    Toast.makeText( getContext(), "advertisement" + i + ' ' + c, Toast.LENGTH_SHORT );
+
+                    setImage( c.getFirstImage(), c.getTitle() );
+                    i++;
+                }*/
+
+                for (Map.Entry<String, Object> entry : mapValue.entrySet()) {
+                    if (entry.getKey().equals( "image" )) {
+                        System.out.println( "Key = " + entry.getKey() + ", Value = " + entry.getValue() );
+
+                        System.out.println( "kep:" + entry.getValue().toString() );
+                        imageUrl = entry.getValue().toString();
+                    }
+
+                    if (entry.getKey().equals( "title" )) {
+                        System.out.println( "Title Key = " + entry.getKey() + ", Title Value = " + entry.getValue() );
+                        Name = (String) entry.getValue();
+
+                    }
+
+                    if (imageUrl != null && Name != null) {
+                        setImage( imageUrl, Name );
+                    }
+
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        } );
+
+
+    }
+
+
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -114,28 +238,25 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
                 Toast.makeText( getContext(),"ADD button",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.navigation_home:
-                fragment = new AddAdvertisementFragment();
+                fragment = new ListingAdsFragment();
                 Toast.makeText( getContext(),"HOME button",Toast.LENGTH_SHORT).show();
                  break;
             case R.id.navigation_users:
-                fragment=new AddAdvertisementFragment();
+                fragment=new UserProfileFragment();
                 Toast.makeText( getContext(),"USERS button",Toast.LENGTH_SHORT).show();
                 break;
 
         }
 
         if (fragment != null) {
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            if(ft!=null)
-            {
-                ft.replace(R.id.fragment_container, fragment);
-                ft.commit();
-            }
+                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                if(ft!=null)
+                {
+                    ft.replace(R.id.fragment_container, fragment);
+                    ft.commit();
+                }
 
         }
-
-
-
 
     }
 }

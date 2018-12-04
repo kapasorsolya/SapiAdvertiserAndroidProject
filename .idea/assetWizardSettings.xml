@@ -13,30 +13,13 @@
                       <PersistentState>
                         <option name="children">
                           <map>
-                            <entry key="actionbar">
+                            <entry key="launcher">
                               <value>
                                 <PersistentState>
-                                  <option name="children">
-                                    <map>
-                                      <entry key="image">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="paddingPercent" value="5" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
-                                    </map>
-                                  </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Orsolya\Documents\SapiAdvertiserAndroid\images\sapiLogo.png" />
-                                      <entry key="outputName" value="sapi_action_logo" />
-                                      <entry key="theme" value="HOLO_DARK" />
+                                      <entry key="foregroundImage" value="C:\Users\Orsolya\Downloads\add.svg" />
+                                      <entry key="foregroundLayerName" value="ic_add_icon" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -44,9 +27,27 @@
                             </entry>
                           </map>
                         </option>
+                      </PersistentState>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </PersistentState>
+          </value>
+        </entry>
+        <entry key="vectorWizard">
+          <value>
+            <PersistentState>
+              <option name="children">
+                <map>
+                  <entry key="vectorAssetStep">
+                    <value>
+                      <PersistentState>
                         <option name="values">
                           <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_man_user" />
+                            <entry key="sourceFile" value="C:\Users\Orsolya\Downloads\man-user.svg" />
                           </map>
                         </option>
                       </PersistentState>

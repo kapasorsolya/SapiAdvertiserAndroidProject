@@ -12,6 +12,14 @@
     <string name="short_description">Short Description</string>
     <string name="long_description">Long Description</string>
     <string name="location_text">Location Text</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="SingUp" />
+    <string name="Login" />
+    <string name="sign_out">Sign_Out</string>
+    <string name="email">emailAddress</string>
+    <string name="verification_code">GET VERIFICATION CODE</string>
     <string name="title_activity_listing_advertisment">ListingAdvertismentActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

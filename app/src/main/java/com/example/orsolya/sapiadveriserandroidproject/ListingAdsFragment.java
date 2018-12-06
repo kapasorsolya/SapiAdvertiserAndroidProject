@@ -36,23 +36,31 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
     private  BottomNavigationView mOnNavigationItemSelectedListener;
 
-    FirebaseDatabase database ;
-    DatabaseReference  myRef;
+    private  FirebaseDatabase database ;
+    private  DatabaseReference  myRef;
 
-    ArrayList<Advertisement> list;
+
+
+    private ArrayList<Advertisement> list;
 
     public ListingAdsFragment() {
+
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
 
-        mOnNavigationItemSelectedListener = (BottomNavigationView) rootView.findViewById( R.id.navigation );
+        mOnNavigationItemSelectedListener = rootView.findViewById( R.id.navigation );
         mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener( this );
 
+       // getListAdapter().notifyDataSetChanged();
+
         initializeRecyclerView(rootView);
+
 
         return rootView;
 
@@ -65,34 +73,28 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
         // 2. set layoutManger
         recyclerView.setLayoutManager( new LinearLayoutManager( getActivity() ) );
 
+
         // this is data fro recycler view
         Log.d( TAG, "initImageBitmaps: preparing bitmaps." );
 
-        //getImagesForTheList();
-
-
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("message");
-
+        myRef = database.getReference("advertisement");
+        list = new ArrayList<Advertisement>();
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                list = new ArrayList<Advertisement>();
+                list.clear();
                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
                     Advertisement value = dataSnapshot1.getValue(Advertisement.class);
                     Advertisement ads = new Advertisement();
                     String title = value.getTitle();
-                  //  mNames.add( title );
                     String image = value.getImage();
-                   // ads.setTitle(title);
-                    //ads.setImage( (ArrayList<String>) image );
-                    //mImageUrls.add(image.get( 0 ));
-                   // Log.d("mUmageUrl", mImageUrls.get(mImageUrls.size()));
-                    //Log.d("mNames", mNames.get( mNames.size() ));
-                    //list.add(ads);
+                    Log.d("ImageUrl",image);
+                    Log.d("ImageTitle", title);
+                    list.add(new Advertisement( title,image ));
 
                 }
 
@@ -106,76 +108,37 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
         });
 
 
-
-
-
-        list = new ArrayList<Advertisement>();
-        setImages();
         // 3. create an adapter
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter( list);
+        RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list);
+
+        mAdapter.notifyDataSetChanged();
         // 4. set adapter
         recyclerView.setAdapter( mAdapter );
+
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
 
+
+
     }
 
-    private void setImages(){
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
-    }
+
     private void getImagesForTheList() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myFirebaseRef = database.getReference( "advertisement" );
 
-        Query queryRef = myFirebaseRef.orderByChild( "image" );
+        Query queryRef = myFirebaseRef.orderByChild( "advertisement" );
 
 
         queryRef.addChildEventListener( new ChildEventListener() {
-            String imageUrl = null;
-            String Name = null;
 
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChild) {
-                System.out.println( dataSnapshot.getValue() );
-                Map<String, Object> mapValue = (Map<String, Object>) dataSnapshot.getValue();
-/*
-                DataSnapshot contactSnapshot = dataSnapshot.child( "advertisement" );
-                Iterable<DataSnapshot> contactChildren = contactSnapshot.getChildren();
-                int i = 0;
-                for (DataSnapshot contact : contactChildren) {
-                    Advertisement c = contact.getValue( Advertisement.class );
-                    Toast.makeText( getContext(), "advertisement" + i + ' ' + c, Toast.LENGTH_SHORT );
+                Advertisement ad = dataSnapshot.getValue(Advertisement.class);
 
-                    setImage( c.getFirstImage(), c.getTitle() );
-                    i++;
-                }*/
+                list.add( ad );
 
-                for (Map.Entry<String, Object> entry : mapValue.entrySet()) {
-                    if (entry.getKey().equals( "image" )) {
-                        System.out.println( "Key = " + entry.getKey() + ", Value = " + entry.getValue() );
-
-                        System.out.println( "kep:" + entry.getValue().toString() );
-                        imageUrl = entry.getValue().toString();
-                    }
-
-                    if (entry.getKey().equals( "title" )) {
-                        System.out.println( "Title Key = " + entry.getKey() + ", Title Value = " + entry.getValue() );
-                        Name = (String) entry.getValue();
-
-                    }
-
-
-                }
             }
 
             @Override
@@ -197,13 +160,8 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        } );
-
-
+        });
     }
-
-
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         displayView(item.getItemId());

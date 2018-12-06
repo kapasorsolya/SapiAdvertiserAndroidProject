@@ -1,4 +1,4 @@
-package com.example.orsolya.sapiadveriserandroidproject;
+package com.example.orsolya.sapiadveriserandroidproject.Models;
 
 import com.google.firebase.database.DatabaseReference;
 

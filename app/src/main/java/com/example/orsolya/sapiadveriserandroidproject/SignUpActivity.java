@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,9 +90,7 @@ public class SignUpActivity extends Activity {
         String phoneNumberText = phoneNumber.getText().toString();
 
         DatabaseReference newPostRef = ref.push();
-       // Map<String, User> users = new HashMap<>();
         newPostRef.setValue(new User(firstNameText, lastNameText, phoneNumberText));
-        //users.put("gracehop", new User("Straff", "Barbara", "+40746581468"));
         newPostRef.push();
 
 

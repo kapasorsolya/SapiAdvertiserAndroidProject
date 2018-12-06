@@ -35,28 +35,13 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
 
     private  BottomNavigationView mOnNavigationItemSelectedListener;
-    private  BottomNavigationView mOnNavigationItemSelectedListener1;
 
-
-    //vars
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-
-    //
     FirebaseDatabase database ;
     DatabaseReference  myRef;
 
-    List<Advertisement> list;
+    ArrayList<Advertisement> list;
 
     public ListingAdsFragment() {
-    }
-
-    public  void setImage(String url, String name) {
-        mImageUrls.add( url );
-        mNames.add( name );
-
-        //mImageUrls.add("gs://sapiadveriser.appspot.com/imageName1.jpg");
-        //mNames.add( "alma" );
     }
 
     @Override
@@ -100,13 +85,13 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
                     Advertisement value = dataSnapshot1.getValue(Advertisement.class);
                     Advertisement ads = new Advertisement();
                     String title = value.getTitle();
-                    mNames.add( title );
-                    List <String> image = value.getImage();
+                  //  mNames.add( title );
+                    String image = value.getImage();
                    // ads.setTitle(title);
                     //ads.setImage( (ArrayList<String>) image );
-                    mImageUrls.add(image.get( 0 ));
-                    Log.d("mUmageUrl", mImageUrls.get(mImageUrls.size()));
-                    Log.d("mNames", mNames.get( mNames.size() ));
+                    //mImageUrls.add(image.get( 0 ));
+                   // Log.d("mUmageUrl", mImageUrls.get(mImageUrls.size()));
+                    //Log.d("mNames", mNames.get( mNames.size() ));
                     //list.add(ads);
 
                 }
@@ -123,25 +108,30 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
 
 
-        setImage(  "https://i.redd.it/tpsnoz5bzo501.jpg", "Trondheim" );
-        setImage( "https://i.redd.it/qn7f9oqu7o501.jpg" , "Portugal" );
-        setImage(  "https://i.redd.it/j6myfqglup501.jpg" , "Rocky Mountain National Park" );
-        setImage( "https://i.redd.it/0h2gm1ix6p501.jpg" , "Mahahual" );
-        setImage( "https://i.redd.it/k98uzl68eh501.jpg" , "Frozen Lake" );
-        setImage( "https://i.redd.it/glin0nwndo501.jpg" , "White Sands Desert" );
-        setImage( "https://i.redd.it/obx4zydshg601.jpg" , "Austrailia" );
-        setImage( "https://i.imgur.com/ZcLLrkY.jpg" , "Washington" );
 
-
-
+        list = new ArrayList<Advertisement>();
+        setImages();
         // 3. create an adapter
-        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter( mNames, mImageUrls );
+        RecyclerViewAdapter mAdapter = new RecyclerViewAdapter( list);
         // 4. set adapter
         recyclerView.setAdapter( mAdapter );
         // 5. set item animator to DefaultAnimator
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
+
     }
 
+    private void setImages(){
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+        list.add(  new Advertisement(  "Trondheim","https://i.redd.it/tpsnoz5bzo501.jpg"));
+    }
     private void getImagesForTheList() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myFirebaseRef = database.getReference( "advertisement" );
@@ -184,9 +174,6 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
                     }
 
-                    if (imageUrl != null && Name != null) {
-                        setImage( imageUrl, Name );
-                    }
 
                 }
             }

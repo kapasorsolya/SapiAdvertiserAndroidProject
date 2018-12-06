@@ -1,14 +1,8 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,21 +15,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.UUID;
-
-import static android.content.Context.MODE_PRIVATE;
-import static com.google.firebase.storage.StorageReference.*;
 
 
 public class AddAdvertisementFragment extends Fragment {
@@ -119,8 +101,7 @@ public class AddAdvertisementFragment extends Fragment {
                 //DatabaseReference newref = database.getReference("sapiadveriser");
 
                 DatabaseReference newPostRef = ref.push();
-                ArrayList<String> images = new ArrayList<>( );
-                images.add("https://firebasestorage.googleapis.com/v0/b/sapiadveriser.appspot.com/o/imageName1.jpg?alt=media&token=ba8765c3-f04a-4a10-af2a-faa7c6bbea16" );
+                String images="https://firebasestorage.googleapis.com/v0/b/sapiadveriser.appspot.com/o/imageName1.jpg?alt=media&token=ba8765c3-f04a-4a10-af2a-faa7c6bbea16" ;
                 Advertisement post=new Advertisement("2",mLocation,mLongDescription,mShortDescription,
                         mPhoneNumber,false,mTitle,images );
                 newPostRef.setValue(post);

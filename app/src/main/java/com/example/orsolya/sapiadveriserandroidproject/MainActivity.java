@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -61,16 +62,17 @@ public class MainActivity extends AppCompatActivity  implements  FragmentChangeO
 
 
 
-    private void setImage(String imageUrl, String imageName){
+    private void setImage(Advertisement ad){
         Log.d(TAG, "setImage: setting te image and name to widgets.");
 
         TextView name = findViewById(R.id.image_name);
-        name.setText(imageName);
+        name.setText(ad.getTitle());
 
         ImageView image = findViewById(R.id.image);
+
         Glide.with(this)
                 .asBitmap()
-                .load(imageUrl)
+                .load(ad.getImage())
                 .into(image);
     }
 }

@@ -11,12 +11,12 @@ public class Advertisement implements Serializable {
     private String PhoneNumber;
     private boolean Reported;
     private String Title;
-    private ArrayList<String> Image;
+    private String Image;
 
     public Advertisement() {
     }
 
-    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, ArrayList<String> image) {
+    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image) {
         Identifier = identifier;
         Location = location;
         LongDescription = longDescription;
@@ -59,6 +59,11 @@ public class Advertisement implements Serializable {
         ShortDescription = shortDescription;
     }
 
+    public Advertisement(String title, String image) {
+        Title = title;
+        Image = image;
+    }
+
     public String getPhoneNumber() {
         return PhoneNumber;
     }
@@ -83,17 +88,14 @@ public class Advertisement implements Serializable {
         Title = title;
     }
 
-    public ArrayList<String> getImage() {
+    public String getImage() {
         return Image;
     }
 
-    public void setImage(ArrayList<String> image) {
+    public void setImage(String image) {
         Image = image;
     }
 
-    public String getFirstImage(){
-        return Image.get( 0 );
-    }
 
     @Override
     public String toString() {

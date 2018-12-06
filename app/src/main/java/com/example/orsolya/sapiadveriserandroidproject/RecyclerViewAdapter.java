@@ -13,9 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
 import com.example.orsolya.sapiadveriserandroidproject.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -23,16 +26,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<String> mImageNames;
-    private ArrayList<String> mImages;
+    private  List<Advertisement> list;
 
-    public RecyclerViewAdapter(ArrayList<String> imageNames, ArrayList<String> images ) {
-        mImageNames = imageNames;
-        mImages = images;
-    }
 
-    public RecyclerViewAdapter(ArrayList<String> images) {
-        mImages = images;
+    public RecyclerViewAdapter(List<Advertisement> list ) {
+        this.list = list;
     }
 
     @Override
@@ -45,26 +43,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called.");
 
+
+
+
+
         Glide.with(holder.itemView.getContext())
                 .asBitmap()
-                .load(mImages.get(position))
+                .load(list.get(position).getImage())
                 .into(holder.image);
 
-        holder.imageName.setText(mImageNames.get(position));
+        holder.imageName.setText(list.get(position).getTitle());
 
-        holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked on: " + mImageNames.get(position));
 
-                Toast.makeText(holder.itemView.getContext(), mImageNames.get(position), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return mImageNames==null ? 0 : mImageNames.size();
+        return list==null ? 0 : list.size();
     }
 
 

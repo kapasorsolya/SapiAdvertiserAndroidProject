@@ -53,6 +53,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .into(holder.image);
 
         holder.imageName.setText(list.get(position).getTitle());
+        holder.imageDescription.setText( list.get( position ).getShortDescription() );
+        
 
 
     }
@@ -68,12 +70,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         CircleImageView image;
         TextView imageName;
         RelativeLayout parentLayout;
+        TextView imageDescription;
 
         ViewHolder(View itemView) {
             super(itemView);
             image = itemView.findViewById(R.id.image);
             imageName = itemView.findViewById(R.id.image_name);
             parentLayout = itemView.findViewById(R.id.parent_layout);
+            imageDescription = itemView.findViewById( R.id.image_title );
         }
     }
 }

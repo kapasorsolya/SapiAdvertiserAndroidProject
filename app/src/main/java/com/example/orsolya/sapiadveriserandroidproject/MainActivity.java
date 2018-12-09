@@ -66,10 +66,6 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
         fragmentTransaction.add( R.id.fragment_container, fragment, fragment.toString() );
         fragmentTransaction.commit();
     }
-    /*@Override
-    public void onBackPressed() {
-        Toast.makeText( getBaseContext(),"You have sing in!",Toast.LENGTH_SHORT ).show();
-    }*/
 
 
 

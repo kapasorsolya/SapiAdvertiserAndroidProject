@@ -54,10 +54,6 @@ public class ListingAdsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
 
-       /// mOnNavigationItemSelectedListener = rootView.findViewById( R.id.navigation );
-        //mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener( this );
-        //getListAdapter().notifyDataSetChanged();
-
         initializeRecyclerView(rootView);
 
 
@@ -88,12 +84,13 @@ public class ListingAdsFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
                     Advertisement value = dataSnapshot1.getValue(Advertisement.class);
-                    Advertisement ads = new Advertisement();
+                   // Advertisement ads = new Advertisement();
                     String title = value.getTitle();
                     String image = value.getImage();
+                    String shortDescription = value.getShortDescription();
                     Log.d("ImageUrl",image);
                     Log.d("ImageTitle", title);
-                    list.add(new Advertisement( title,image ));
+                    list.add(new Advertisement( title,image,shortDescription ));
 
                 }
 
@@ -161,49 +158,7 @@ public class ListingAdsFragment extends Fragment {
             }
         } );
     }
-    /*
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        displayView(item.getItemId());
-        return true;
-    }
 
-   @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected( item );
-    }
-
-    public void displayView(int viewId) {
-
-        Fragment fragment = null;
-
-        switch (viewId) {
-            case R.id.navigation_add:
-                fragment = new AddAdvertisementFragment();
-                Toast.makeText( getContext(),"ADD button",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.navigation_home:
-                fragment = new ListingAdsFragment();
-                Toast.makeText( getContext(),"HOME button",Toast.LENGTH_SHORT).show();
-                 break;
-            case R.id.navigation_users:
-                fragment=new UserProfileFragment();
-                Toast.makeText( getContext(),"USERS button",Toast.LENGTH_SHORT).show();
-                break;
-
-        }
-
-        if (fragment != null) {
-                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                if(ft!=null)
-                {
-                    ft.replace(R.id.fragment_container, fragment);
-                    ft.commit();
-                }
-
-        }
-
-    }*/
 }
 
 

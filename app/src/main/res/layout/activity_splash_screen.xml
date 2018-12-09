@@ -12,16 +12,17 @@
         android:layout_height="294dp"
         android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="74dp"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sapilogo" />
+        app:srcCompat="@drawable/ic_sapilogo"
+        android:stateListAnimator="@anim/fromdown"/>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/subTitle"
         android:layout_width="235dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"

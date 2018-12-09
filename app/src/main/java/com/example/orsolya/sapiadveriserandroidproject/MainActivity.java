@@ -1,5 +1,6 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity  implements  FragmentChangeO
 
         //initalize with start fragment
         loadFragment( new ListingAdsFragment() );
+
     }
 
     @Override
@@ -59,6 +61,10 @@ public class MainActivity extends AppCompatActivity  implements  FragmentChangeO
         fragmentTransaction.add( R.id.fragment_container, fragment, fragment.toString() );
         fragmentTransaction.commit();
     }
+    /*@Override
+    public void onBackPressed() {
+        Toast.makeText( getBaseContext(),"You have sing in!",Toast.LENGTH_SHORT ).show();
+    }*/
 
 
 

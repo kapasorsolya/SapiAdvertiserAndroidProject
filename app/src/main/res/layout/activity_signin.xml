@@ -30,6 +30,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="@drawable/ic_sapilogo"
         app:layout_constraintEnd_toStartOf="@+id/textViewAppName"
         app:layout_constraintHorizontal_bias="0.913"
         app:layout_constraintStart_toStartOf="parent"

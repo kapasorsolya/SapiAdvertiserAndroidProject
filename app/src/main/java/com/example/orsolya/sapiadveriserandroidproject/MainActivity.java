@@ -40,14 +40,19 @@ import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity  implements  FragmentChangeOnListener {
+public class MainActivity extends AppCompatActivity  implements FragmentChangeOnListener, BottomNavigationView.OnNavigationItemSelectedListener  {
 
     private static final String TAG = "MainActivity";
+
+    private  BottomNavigationView mOnNavigationItemSelectedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+
+         mOnNavigationItemSelectedListener = findViewById( R.id.navigation );
+         mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener(this);
 
         //initalize with start fragment
         loadFragment( new ListingAdsFragment() );
@@ -80,6 +85,49 @@ public class MainActivity extends AppCompatActivity  implements  FragmentChangeO
                 .asBitmap()
                 .load(ad.getImage())
                 .into(image);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        displayView(item.getItemId());
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected( item );
+    }
+
+    public void displayView(int viewId) {
+
+        Fragment fragment = null;
+
+        switch (viewId) {
+            case R.id.navigation_add:
+                fragment = new AddAdvertisementFragment();
+                Toast.makeText( getBaseContext(),"ADD button",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.navigation_home:
+                fragment = new ListingAdsFragment();
+                Toast.makeText( getBaseContext(),"HOME button",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.navigation_users:
+                fragment=new UserProfileFragment();
+                Toast.makeText( getBaseContext(),"USERS button",Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+
+        if (fragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            if(ft!=null)
+            {
+                ft.replace(R.id.fragment_container, fragment);
+                ft.commit();
+            }
+
+        }
+
     }
 }
 

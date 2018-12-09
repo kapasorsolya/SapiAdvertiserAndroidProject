@@ -31,10 +31,10 @@ import java.util.Map;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class ListingAdsFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class ListingAdsFragment extends Fragment {
 
 
-    private  BottomNavigationView mOnNavigationItemSelectedListener;
+    //private  BottomNavigationView mOnNavigationItemSelectedListener;
 
     private  FirebaseDatabase database ;
     private  DatabaseReference  myRef;
@@ -54,10 +54,9 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
 
-        mOnNavigationItemSelectedListener = rootView.findViewById( R.id.navigation );
-        mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener( this );
-
-       // getListAdapter().notifyDataSetChanged();
+       /// mOnNavigationItemSelectedListener = rootView.findViewById( R.id.navigation );
+        //mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener( this );
+        //getListAdapter().notifyDataSetChanged();
 
         initializeRecyclerView(rootView);
 
@@ -135,7 +134,7 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChild) {
-                Advertisement ad = dataSnapshot.getValue(Advertisement.class);
+                Advertisement ad = dataSnapshot.getValue( Advertisement.class );
 
                 list.add( ad );
 
@@ -160,8 +159,9 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        } );
     }
+    /*
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         displayView(item.getItemId());
@@ -203,7 +203,7 @@ public class ListingAdsFragment extends Fragment implements BottomNavigationView
 
         }
 
-    }
+    }*/
 }
 
 

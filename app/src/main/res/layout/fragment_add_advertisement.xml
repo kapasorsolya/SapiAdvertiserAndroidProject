@@ -98,8 +98,8 @@
             android:id="@+id/addImageButton"
             android:layout_width="88dp"
             android:layout_height="62dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
@@ -110,7 +110,7 @@
             app:layout_constraintHorizontal_bias="0.152"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_location_text"
-            app:layout_constraintVertical_bias="0.546" />
+            app:layout_constraintVertical_bias="0.225" />
 
         <Button
             android:id="@+id/add_new_ad_button"
@@ -120,7 +120,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="68dp"
             android:text="@string/add"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -140,8 +140,10 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.382"
             app:layout_constraintStart_toEndOf="@+id/addImageButton"
-            app:layout_constraintTop_toBottomOf="@+id/txt_location_text">
+            app:layout_constraintTop_toBottomOf="@+id/txt_location_text"
+            app:layout_constraintVertical_bias="0.164">
 
         </android.support.v7.widget.RecyclerView>
 

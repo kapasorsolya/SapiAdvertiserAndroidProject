@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -98,12 +100,13 @@ public class AddAdvertisementFragment extends Fragment {
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference("advertisement");
-                //DatabaseReference newref = database.getReference("sapiadveriser");
+
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
                 DatabaseReference newPostRef = ref.push();
                 String images="https://firebasestorage.googleapis.com/v0/b/sapiadveriser.appspot.com/o/imageName1.jpg?alt=media&token=ba8765c3-f04a-4a10-af2a-faa7c6bbea16" ;
                 Advertisement post=new Advertisement("2",mLocation,mLongDescription,mShortDescription,
-                        mPhoneNumber,false,mTitle,images );
+                        mPhoneNumber,false,mTitle,images,currentFirebaseUser.getUid()  );
                 newPostRef.setValue(post);
 
             }

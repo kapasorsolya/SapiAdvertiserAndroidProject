@@ -20,6 +20,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +34,8 @@ public class UserProfileFragment extends Fragment {
     EditText editPhoneNumberText;
     EditText editEmailText;
     EditText editAddressText;
+
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -46,7 +51,7 @@ public class UserProfileFragment extends Fragment {
         rootview.findViewById(R.id.modifyButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //updateData();
+                updateData();
                 Toast.makeText(getContext(),
                         "Modify was Successfull", Toast.LENGTH_LONG).show();
             }
@@ -61,16 +66,18 @@ public class UserProfileFragment extends Fragment {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         DatabaseReference myRef = database.getReference("users");
 
-        Toast.makeText(getContext(),currentFirebaseUser.getPhoneNumber().toString(),Toast.LENGTH_SHORT).show();
+
+
+       // Toast.makeText(getContext(),currentFirebaseUser.getPhoneNumber().toString(),Toast.LENGTH_SHORT).show();
 
         Log.d("pushed",myRef.getKey());
 
 
-        myRef.child("-LT44plHbA-Ut54D4HZR").addValueEventListener(new ValueEventListener() {
+        myRef.child(currentFirebaseUser.getPhoneNumber()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -97,7 +104,7 @@ public class UserProfileFragment extends Fragment {
 
     private void updateData() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("users");
+        DatabaseReference usersRef= database.getReference("users");
 
         String firstNameText = editTextFirstName.getText().toString();
         String lastNameText = editTextLastName.getText().toString();
@@ -105,23 +112,19 @@ public class UserProfileFragment extends Fragment {
         String emailText = editEmailText.getText().toString();
         String addressText = editAddressText.getText().toString();
 
-       /* DatabaseReference newPostRef = ref.push();
-        // Map<String, User> users = new HashMap<>();
-        newPostRef.setValue(new User(firstNameText, lastNameText, phoneNumberText, emailText, addressText));
-        //users.put("gracehop", new User("Straff", "Barbara", "+40746581468"));
-        newPostRef.push();*/
-
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (currentFirebaseUser == null) {
             Toast.makeText(getContext(), "Kerem jelentkezzen be", Toast.LENGTH_SHORT).show();
         } else {
-            String p = FirebaseAuth.getInstance().getUid();
-            String p1 = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
+            Map<String, Object> userDataUpdates = new HashMap<>();
+            userDataUpdates.put(currentFirebaseUser.getPhoneNumber(), new User(firstNameText, lastNameText, phoneNumberText, emailText, addressText));
+
+            usersRef.updateChildren(userDataUpdates);
+
             try {
-                //ref.;
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
 
 

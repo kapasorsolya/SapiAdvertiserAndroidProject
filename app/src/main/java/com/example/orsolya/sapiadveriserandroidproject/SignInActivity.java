@@ -115,7 +115,6 @@ public class SignInActivity extends Activity {
                             //here you can open new activity
                             Toast.makeText(getApplicationContext(),
                                     "Login Successfull", Toast.LENGTH_LONG).show();
-
                             startActivity(new Intent(SignInActivity.this, MainActivity.class));
                             finish(); // Destroy activity A and not exist in Back stack
                         } else {

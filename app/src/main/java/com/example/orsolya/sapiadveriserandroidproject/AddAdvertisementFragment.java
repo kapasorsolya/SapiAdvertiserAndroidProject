@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import java.util.UUID;
 
 public class AddAdvertisementFragment extends Fragment {
 
-    private static final int RESULT_OK =1 ;
+    private static final int RESULT_OK =-1 ;
     private EditText Title;
     private EditText ShortDescription;
     private EditText LongDescription;
@@ -143,6 +144,7 @@ public class AddAdvertisementFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // In fragment class callback
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("filepathdata",data.toString() + ' ' + data.getData().toString() );
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null )
         {
@@ -171,7 +173,7 @@ public class AddAdvertisementFragment extends Fragment {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child( UUID.randomUUID().toString());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -233,7 +235,6 @@ public class AddAdvertisementFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
 
     }

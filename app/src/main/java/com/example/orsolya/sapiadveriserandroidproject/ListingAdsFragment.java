@@ -106,7 +106,7 @@ public class ListingAdsFragment extends Fragment {
 
         // 3. create an adapter
         RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list);
-
+        getImagesForTheList();
         mAdapter.notifyDataSetChanged();
         // 4. set adapter
         recyclerView.setAdapter( mAdapter );

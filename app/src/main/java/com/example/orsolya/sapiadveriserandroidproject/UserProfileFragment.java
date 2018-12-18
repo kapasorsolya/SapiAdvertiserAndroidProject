@@ -3,6 +3,7 @@ package com.example.orsolya.sapiadveriserandroidproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -31,6 +37,8 @@ public class UserProfileFragment extends Fragment {
     EditText editPhoneNumberText;
     EditText editEmailText;
     EditText editAddressText;
+
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     public UserProfileFragment() {
         // Required empty public constructor
@@ -46,9 +54,20 @@ public class UserProfileFragment extends Fragment {
         rootview.findViewById(R.id.modifyButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //updateData();
+                updateData();
                 Toast.makeText(getContext(),
                         "Modify was Successfull", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        rootview.findViewById(R.id.signOutBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentFirebaseUser!=null) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getContext(), SignInActivity.class));
+                    getActivity().finish();
+                }
             }
         });
 
@@ -61,43 +80,49 @@ public class UserProfileFragment extends Fragment {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
 
         DatabaseReference myRef = database.getReference("users");
 
-        Toast.makeText(getContext(),currentFirebaseUser.getPhoneNumber().toString(),Toast.LENGTH_SHORT).show();
+
+
+       // Toast.makeText(getContext(),currentFirebaseUser.getPhoneNumber().toString(),Toast.LENGTH_SHORT).show();
 
         Log.d("pushed",myRef.getKey());
 
+        if(currentFirebaseUser == null){
+            Toast.makeText(getContext(), "Kerem jelentkezzen be", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            myRef.child(currentFirebaseUser.getPhoneNumber()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-        myRef.child("-LT44plHbA-Ut54D4HZR").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+                    User users = dataSnapshot.getValue(User.class);
+                    editTextFirstName.setText(users.getFirstName());
+                    Log.d("USER", users.getPhoneNumber().toString());
+                    editTextLastName.setText(users.getLastName());
+                    Log.d("USER", users.getLastName().toString());
+                    editPhoneNumberText.setText(users.getPhoneNumber());
+                    Log.d("USER", users.getFirstName().toString());
+                    editEmailText.setText(users.getEmail());
+                    editAddressText.setText(users.getAddress());
+                }
 
-                User users = dataSnapshot.getValue(User.class);
-                editTextFirstName.setText(users.getFirstName());
-                Log.d("USER",users.getPhoneNumber().toString());
-                editTextLastName.setText(users.getLastName());
-                Log.d("USER",users.getLastName().toString());
-                editPhoneNumberText.setText(users.getPhoneNumber());
-                Log.d("USER",users.getFirstName().toString());
-                editEmailText.setText(users.getEmail());
-                editAddressText.setText(users.getAddress());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("tmz", "Failed to read value.", error.toException());
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w("tmz", "Failed to read value.", error.toException());
+                }
+            });
+        }
 
         return rootview;
     }
 
     private void updateData() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("users");
+        DatabaseReference usersRef= database.getReference("users");
 
         String firstNameText = editTextFirstName.getText().toString();
         String lastNameText = editTextLastName.getText().toString();
@@ -105,23 +130,13 @@ public class UserProfileFragment extends Fragment {
         String emailText = editEmailText.getText().toString();
         String addressText = editAddressText.getText().toString();
 
-       /* DatabaseReference newPostRef = ref.push();
-        // Map<String, User> users = new HashMap<>();
-        newPostRef.setValue(new User(firstNameText, lastNameText, phoneNumberText, emailText, addressText));
-        //users.put("gracehop", new User("Straff", "Barbara", "+40746581468"));
-        newPostRef.push();*/
-
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (currentFirebaseUser == null) {
             Toast.makeText(getContext(), "Kerem jelentkezzen be", Toast.LENGTH_SHORT).show();
         } else {
-            String p = FirebaseAuth.getInstance().getUid();
-            String p1 = FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber();
-            try {
-                //ref.;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Map<String, Object> userDataUpdates = new HashMap<>();
+            userDataUpdates.put(currentFirebaseUser.getPhoneNumber(), new User(firstNameText, lastNameText, phoneNumberText, emailText, addressText));
 
+            usersRef.updateChildren(userDataUpdates);
         }
 
 

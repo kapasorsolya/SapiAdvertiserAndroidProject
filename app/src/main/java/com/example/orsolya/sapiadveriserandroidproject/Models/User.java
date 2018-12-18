@@ -11,6 +11,7 @@ public  class User {
     public String phoneNumber;
     public String email;
     public String address;
+    public String userid;
 
     public User(){
 
@@ -27,6 +28,23 @@ public  class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.address = address;
+    }
+
+    public User(String firstName, String lastName, String phoneNumber, String email, String address, String userid) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.userid = userid;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getEmail() {

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -83,15 +84,21 @@ public class SignUpActivity extends Activity {
 
     private void savingData(){
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("users");
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        //DatabaseReference ref = database.getReference("users");
 
         String firstNameText = firstName.getText().toString();
         String lastNameText = lastName.getText().toString();
         String phoneNumberText = phoneNumber.getText().toString();
 
-        DatabaseReference newPostRef = ref.push();
-        newPostRef.setValue(new User(firstNameText, lastNameText, phoneNumberText));
-        newPostRef.push();
+
+        DatabaseReference usersRef = database.getReference("users");
+
+        Map<String, User> users = new HashMap<>();
+        users.put(currentFirebaseUser.getPhoneNumber(), new User(firstNameText, lastNameText, phoneNumberText));
+        //users.put("gracehop", new User("December 9, 1906", "Grace Hopper"));
+
+        usersRef.setValue(users);
 
 
     }

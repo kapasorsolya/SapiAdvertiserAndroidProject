@@ -103,11 +103,11 @@
             android:layout_marginBottom="30dp"
             android:src="@android:drawable/sym_def_app_icon"
             app:layout_constraintBottom_toTopOf="@+id/editTextFirstName"
-            app:layout_constraintStart_toEndOf="@+id/power_button"
+            app:layout_constraintStart_toEndOf="@+id/signOutBtn"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/power_button"
+            android:id="@+id/signOutBtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="32dp"

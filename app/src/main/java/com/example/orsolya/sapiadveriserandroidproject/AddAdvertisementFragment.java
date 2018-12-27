@@ -1,8 +1,12 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,10 +19,20 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
+import java.io.IOException;
+import java.util.UUID;
 
 public class AddAdvertisementFragment extends Fragment {
 
@@ -28,7 +42,7 @@ public class AddAdvertisementFragment extends Fragment {
     private EditText LongDescription;
     private EditText PhoneNumber;
     private EditText Location;
-    private ImageView mImageView;
+    private Button AddAdvertisementButton;
 
     private String mTitle;
     private String  mShortDescription;
@@ -36,21 +50,12 @@ public class AddAdvertisementFragment extends Fragment {
     private String mPhoneNumber;
     private String mLocation;
 
+    private Button btnChoose;
+    private ImageView imageView;
+
     private Uri filePath;
-    //TODO
-    //images name
 
-
-    private Button AddAdvertisementButton;
-
-    private static final int PICK_IMAGE_REQUEST = 71;
-
-
-
-
-    //TODO
-    //images is meg atvenni es beszurni
-
+    private final int PICK_IMAGE_REQUEST = 71;
 
 
     // Container Activity must implement this interface
@@ -71,7 +76,8 @@ public class AddAdvertisementFragment extends Fragment {
         PhoneNumber = v.findViewById( R.id.txt_phone_number );
         Location = v.findViewById( R.id.txt_location_text );
         AddAdvertisementButton = v.findViewById( R.id.add_new_ad_button );
-        mImageView = v.findViewById( R.id.imageView );
+        btnChoose =  v.findViewById(R.id.btnChoose);
+        imageView =  v.findViewById(R.id.imgView);
 
     }
 
@@ -98,16 +104,25 @@ public class AddAdvertisementFragment extends Fragment {
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference ref = database.getReference("advertisement");
-                //DatabaseReference newref = database.getReference("sapiadveriser");
+                uploadImage();
+                FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
                 DatabaseReference newPostRef = ref.push();
                 String images="https://firebasestorage.googleapis.com/v0/b/sapiadveriser.appspot.com/o/imageName1.jpg?alt=media&token=ba8765c3-f04a-4a10-af2a-faa7c6bbea16" ;
                 Advertisement post=new Advertisement("2",mLocation,mLongDescription,mShortDescription,
-                        mPhoneNumber,false,mTitle,images );
+                        mPhoneNumber,false,mTitle,images,currentFirebaseUser.getUid()  );
                 newPostRef.setValue(post);
 
             }
         } );
+
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
+
+            }
+        });
 
         Title.addTextChangedListener(inputTextWatcher);
         PhoneNumber.addTextChangedListener( inputTextWatcher);
@@ -122,6 +137,65 @@ public class AddAdvertisementFragment extends Fragment {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // In fragment class callback
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null )
+        {
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
+                imageView.setImageBitmap(bitmap);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+    private void uploadImage() {
+        FirebaseStorage storage;
+        StorageReference storageReference;
+        storage = FirebaseStorage.getInstance();
+        storageReference =  storage.getReferenceFromUrl("gs://sapiadveriser.appspot.com/");;
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
 
     }
 
@@ -146,7 +220,7 @@ public class AddAdvertisementFragment extends Fragment {
              mLongDescription= LongDescription.getText().toString();
              mPhoneNumber=PhoneNumber.getText().toString();
              mLocation=Location.getText().toString();
-
+            imageView.getDrawable();
             if(!mTitle.isEmpty() && !mShortDescription.isEmpty() && !mLongDescription.isEmpty() && !mPhoneNumber.isEmpty() &&
                     !mLocation.isEmpty())
             {

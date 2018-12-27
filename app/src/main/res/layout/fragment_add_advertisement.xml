@@ -95,7 +95,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txt_phone_number" />
 
         <Button
-            android:id="@+id/addImageButton"
+            android:id="@+id/btnChoose"
             android:layout_width="88dp"
             android:layout_height="62dp"
             android:layout_marginStart="16dp"
@@ -103,7 +103,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="6dp"
             android:background="@android:drawable/ic_input_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
@@ -128,24 +128,24 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerv_view"
-            android:layout_width="230dp"
-            android:layout_height="109dp"
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="108dp"
+            android:layout_height="71dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.382"
-            app:layout_constraintStart_toEndOf="@+id/addImageButton"
+            app:layout_constraintHorizontal_bias="0.166"
+            app:layout_constraintStart_toEndOf="@+id/btnChoose"
             app:layout_constraintTop_toBottomOf="@+id/txt_location_text"
-            app:layout_constraintVertical_bias="0.164">
-
-        </android.support.v7.widget.RecyclerView>
+            app:layout_constraintVertical_bias="0.243"
+            app:srcCompat="@drawable/ic_sapilogo" />
 
     </android.support.constraint.ConstraintLayout>
 

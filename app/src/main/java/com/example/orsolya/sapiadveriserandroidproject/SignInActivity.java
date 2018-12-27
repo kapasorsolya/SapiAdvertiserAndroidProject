@@ -14,12 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
@@ -33,6 +35,8 @@ public class SignInActivity extends Activity {
     EditText editTextPhone, editTextCode;
     FirebaseAuth mAuth;
     String codeSent;
+    FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,12 +115,25 @@ public class SignInActivity extends Activity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
                             //here you can open new activity
-                            Toast.makeText(getApplicationContext(),
-                                    "Login Successfull", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                            finish(); // Destroy activity A and not exist in Back stack
+                            if(currentFirebaseUser.getPhoneNumber().toString() != null){
+                                Toast.makeText(getApplicationContext(),
+                                        "Login Successfull" + currentFirebaseUser.getPhoneNumber().toString() , Toast.LENGTH_LONG).show();
+
+
+                                startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                                finish(); // Destroy activity A and not exist in Back stack
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(),
+                                        "Login Successfull"  , Toast.LENGTH_LONG).show();
+                            }
+
+
+
+
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(getApplicationContext(),

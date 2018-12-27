@@ -46,6 +46,7 @@ public class SignUpActivity extends Activity {
                         "Registration Successfull", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getBaseContext(), SignInActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

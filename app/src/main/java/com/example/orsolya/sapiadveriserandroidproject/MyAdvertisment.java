@@ -1,22 +1,22 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,33 +26,33 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import static android.support.constraint.Constraints.TAG;
 
-public class ListingAdsFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class MyAdvertisment extends Fragment {
+
+    private FirebaseDatabase database ;
+    private DatabaseReference myRef;
+    final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
-    //private  BottomNavigationView mOnNavigationItemSelectedListener;
-
-    private  FirebaseDatabase database ;
-    private  DatabaseReference  myRef;
 
     private ArrayList<Advertisement> list;
-    public ListingAdsFragment() {
 
+    public MyAdvertisment() {
+        // Required empty public constructor
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
+        View rootView = inflater.inflate( R.layout.fragment_my__advertisment, container, false );
 
         initializeRecyclerView(rootView);
-
 
         return rootView;
 
@@ -81,15 +81,15 @@ public class ListingAdsFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
                     Advertisement value = dataSnapshot1.getValue(Advertisement.class);
-                   // Advertisement ads = new Advertisement();
-                    String title = value.getTitle();
-                    String image = value.getImage();
-                    String shortDescription = value.getShortDescription();
-                    //Log.d("ImageUrl",image);
-                    //Log.d("ImageTitle", title);
-                   // Log.d("ImageUrl",image);
-                   // Log.d("ImageTitle", title);
-                    list.add(new Advertisement( title,image,shortDescription ));
+                    // Advertisement ads = new Advertisement();
+                    //if(value.getUploader() == currentFirebaseUser.getUid()) {
+                        String title = value.getTitle();
+                        String image = value.getImage();
+                        String shortDescription = value.getShortDescription();
+                       // Log.d("ImageUrl", image);
+                       // Log.d("ImageTitle", title);
+                        list.add(new Advertisement(title, image, shortDescription));
+                   // }
 
                 }
 
@@ -105,7 +105,7 @@ public class ListingAdsFragment extends Fragment {
 
         // 3. create an adapter
         RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list);
-        getImagesForTheList();
+
         mAdapter.notifyDataSetChanged();
         // 4. set adapter
         recyclerView.setAdapter( mAdapter );
@@ -131,8 +131,10 @@ public class ListingAdsFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChild) {
                 Advertisement ad = dataSnapshot.getValue( Advertisement.class );
+               // if(ad.getUploader() == currentFirebaseUser.getUid()) {
 
-                list.add( ad );
+                    list.add(ad);
+                //}
 
             }
 
@@ -158,6 +160,9 @@ public class ListingAdsFragment extends Fragment {
         } );
     }
 
+
+
+
+
+
 }
-
-

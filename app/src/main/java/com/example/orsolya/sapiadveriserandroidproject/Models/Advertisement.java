@@ -1,7 +1,11 @@
 package com.example.orsolya.sapiadveriserandroidproject.Models;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Advertisement implements Serializable {
     private String Identifier;
@@ -14,6 +18,8 @@ public class Advertisement implements Serializable {
     private String Image;
     private String Uploader;
 
+    public Map<String, Object> advertisements = new HashMap<>();
+
     public Advertisement(String title, String image, String shortDescription) {
         this.Title = title;
         this.Image=image;
@@ -23,16 +29,7 @@ public class Advertisement implements Serializable {
     public Advertisement() {
     }
 
-    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image) {
-        Identifier = identifier;
-        Location = location;
-        LongDescription = longDescription;
-        ShortDescription = shortDescription;
-        PhoneNumber = phoneNumber;
-        Reported = reported;
-        Title = title;
-        Image = image;
-    }
+
 
     public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image, String uploader) {
         Identifier = identifier;
@@ -44,6 +41,22 @@ public class Advertisement implements Serializable {
         Title = title;
         Image = image;
         Uploader = uploader;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("identifier", Identifier);
+        result.put("location", Location);
+        result.put("longDescription", LongDescription);
+        result.put("shortDescription", ShortDescription);
+        result.put("phoneNumber", PhoneNumber);
+        result.put("reported", Reported);
+        result.put("title", Title);
+        result.put("image", Image);
+        result.put("uploader", Uploader);
+
+        return result;
     }
 
     public String getIdentifier() {

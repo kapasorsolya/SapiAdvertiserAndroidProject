@@ -20,12 +20,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -33,7 +39,14 @@ import com.google.firebase.storage.UploadTask;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map;
 import java.util.UUID;
+
+import static android.support.constraint.Constraints.TAG;
+
+import static android.support.constraint.Constraints.TAG;
 
 public class AddAdvertisementFragment extends Fragment {
 
@@ -55,9 +68,12 @@ public class AddAdvertisementFragment extends Fragment {
     private ImageView imageView;
 
     private Uri filePath;
+    private  Uri downloadUri;
 
     private final int PICK_IMAGE_REQUEST = 71;
 
+    private Advertisement newAd;
+    Long PKeyCurrentTime;
 
     // Container Activity must implement this interface
     public interface OnHeadlineSelectedListener {
@@ -108,11 +124,19 @@ public class AddAdvertisementFragment extends Fragment {
                 uploadImage();
                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
-                DatabaseReference newPostRef = ref.push();
-                String images="https://firebasestorage.googleapis.com/v0/b/sapiadveriser.appspot.com/o/imageName1.jpg?alt=media&token=ba8765c3-f04a-4a10-af2a-faa7c6bbea16" ;
-                Advertisement post=new Advertisement("2",mLocation,mLongDescription,mShortDescription,
-                        mPhoneNumber,false,mTitle,images,currentFirebaseUser.getUid()  );
-                newPostRef.setValue(post);
+                //DatabaseReference newPostRef = ref.push();
+
+               /* newAd=new Advertisement(currentFirebaseUser.getUid(),mLocation,mLongDescription,mShortDescription,
+                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid()  );
+
+                newPostRef.setValue(newAd);*/
+                Map<String, Object> adsDataUpdates = new HashMap<>();
+                PKeyCurrentTime = System.currentTimeMillis();
+                adsDataUpdates.put(PKeyCurrentTime.toString(),new Advertisement(PKeyCurrentTime.toString(),mLocation,mLongDescription,mShortDescription,
+                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid()  ));
+
+                ref.updateChildren(adsDataUpdates);
+
 
             }
         } );
@@ -174,13 +198,35 @@ public class AddAdvertisementFragment extends Fragment {
             progressDialog.show();
 
             StorageReference ref = storageReference.child( UUID.randomUUID().toString());
+            final StorageReference ref = storageReference.child( UUID.randomUUID().toString());
+
             ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
-                        }
+                   .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                       @Override
+                       public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                           ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                               @Override
+                               public void onSuccess(Uri uri) {
+                                   progressDialog.dismiss();
+                                   Toast.makeText(getContext(), "Uploaded " + filePath, Toast.LENGTH_SHORT).show();
+                                   Log.d(TAG, "onSuccess: uri= "+ uri.toString());
+                                   downloadUri = uri;
+                                   updateChild(downloadUri.toString());
+                               }
+
+                               private void updateChild(final String s) {
+                                   final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                   final DatabaseReference ref = database.getReference("advertisement");
+
+                                   final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+
+                                   Log.d("TIMESTAMP----", String.valueOf( PKeyCurrentTime ) );
+
+                                   ref.child(PKeyCurrentTime.toString()).child("image").setValue(s);
+
+                               }
+                           });
+                       }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -197,6 +243,8 @@ public class AddAdvertisementFragment extends Fragment {
                             progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
+
+
         }
 
     }

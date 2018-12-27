@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
          mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener(this);
 
         //initalize with start fragment
-        loadFragment( new ListingAdsFragment() );
+        //loadFragment( new ListingAdsFragment() );
 
     }
 

@@ -39,10 +39,7 @@ public class ListingAdsFragment extends Fragment {
     private  FirebaseDatabase database ;
     private  DatabaseReference  myRef;
 
-
-
     private ArrayList<Advertisement> list;
-
     public ListingAdsFragment() {
 
     }
@@ -88,8 +85,8 @@ public class ListingAdsFragment extends Fragment {
                     String title = value.getTitle();
                     String image = value.getImage();
                     String shortDescription = value.getShortDescription();
-                    Log.d("ImageUrl",image);
-                    Log.d("ImageTitle", title);
+                    //Log.d("ImageUrl",image);
+                    //Log.d("ImageTitle", title);
                     list.add(new Advertisement( title,image,shortDescription ));
 
                 }

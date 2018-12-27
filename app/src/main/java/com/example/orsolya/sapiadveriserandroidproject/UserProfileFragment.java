@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,8 +67,25 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 if(currentFirebaseUser!=null) {
                     FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(getContext(), SignInActivity.class));
+
+                    startActivity(new Intent(getContext(), SplashScreenActivity.class));
                     getActivity().finish();
+                }
+            }
+        });
+
+        rootview.findViewById(R.id.detailButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(currentFirebaseUser!=null) {
+
+                    FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    if(ft!=null)
+                    {
+                        ft.replace(R.id.fragment_container, new MyAdvertisment());
+                        ft.commit();
+                    }
+
                 }
             }
         });

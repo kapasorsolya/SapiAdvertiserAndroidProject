@@ -197,8 +197,8 @@ public class AddAdvertisementFragment extends Fragment {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child( UUID.randomUUID().toString());
             final StorageReference ref = storageReference.child( UUID.randomUUID().toString());
+
 
             ref.putFile(filePath)
                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

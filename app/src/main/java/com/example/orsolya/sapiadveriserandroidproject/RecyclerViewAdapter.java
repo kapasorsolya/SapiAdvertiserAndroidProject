@@ -54,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.imageName.setText(list.get(position).getTitle());
         holder.imageDescription.setText( list.get( position ).getShortDescription() );
+
         
 
 
@@ -71,6 +72,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView imageName;
         RelativeLayout parentLayout;
         TextView imageDescription;
+        TextView counter;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -78,6 +80,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageName = itemView.findViewById(R.id.image_name);
             parentLayout = itemView.findViewById(R.id.parent_layout);
             imageDescription = itemView.findViewById( R.id.image_title );
+            counter = itemView.findViewById(R.id.counter);
         }
     }
 }

@@ -21,10 +21,10 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="76dp"
             android:src="@android:drawable/ic_menu_share"
             android:tint="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -43,13 +43,13 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="76dp"
             android:src="@android:drawable/ic_menu_info_details"
+            android:tint="@color/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/adimageView"
-            android:tint="@color/colorPrimary"/>
+            app:layout_constraintTop_toBottomOf="@+id/adimageView" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image3"
@@ -61,14 +61,14 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="196dp"
             android:layout_marginLeft="196dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="56dp"
             android:src="@android:drawable/sym_def_app_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/Creator"
-            app:layout_constraintHorizontal_bias="0.711"
+            app:layout_constraintHorizontal_bias="0.8"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/adimageView" />
 
@@ -125,7 +125,7 @@
         <EditText
             android:id="@+id/txt_long_description2"
             android:layout_width="401dp"
-            android:layout_height="118dp"
+            android:layout_height="60dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="12dp"

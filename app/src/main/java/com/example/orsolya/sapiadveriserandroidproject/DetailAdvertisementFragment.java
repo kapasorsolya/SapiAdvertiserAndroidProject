@@ -1,6 +1,7 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
  */
 public class DetailAdvertisementFragment extends Fragment {
 
+    private int currentApiVersion;
 
     public DetailAdvertisementFragment() {
         // Required empty public constructor
@@ -22,8 +24,16 @@ public class DetailAdvertisementFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //View view=inflater.inflate( R.layout.fragment_detail_advertisement, container, false );
+      //  getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
+    // Inflate the layout for this fragment
         return inflater.inflate( R.layout.fragment_detail_advertisement, container, false );
     }
+
+
+
+
+
 
 }

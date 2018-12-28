@@ -39,10 +39,7 @@ public class ListingAdsFragment extends Fragment {
     private  FirebaseDatabase database ;
     private  DatabaseReference  myRef;
 
-
-
     private ArrayList<Advertisement> list;
-
     public ListingAdsFragment() {
 
     }
@@ -88,6 +85,9 @@ public class ListingAdsFragment extends Fragment {
                     String title = value.getTitle();
                     String image = value.getImage();
                     String shortDescription = value.getShortDescription();
+
+                    //Log.d("ImageUrl",image);
+                    //Log.d("ImageTitle", title);
                    // Log.d("ImageUrl",image);
                    // Log.d("ImageTitle", title);
                     list.add(new Advertisement( title,image,shortDescription ));
@@ -106,7 +106,7 @@ public class ListingAdsFragment extends Fragment {
 
         // 3. create an adapter
         RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list);
-
+        //getImagesForTheList();
         mAdapter.notifyDataSetChanged();
         // 4. set adapter
         recyclerView.setAdapter( mAdapter );
@@ -118,7 +118,7 @@ public class ListingAdsFragment extends Fragment {
 
     }
 
-
+/*
     private void getImagesForTheList() {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myFirebaseRef = database.getReference( "advertisement" );
@@ -157,7 +157,7 @@ public class ListingAdsFragment extends Fragment {
 
             }
         } );
-    }
+    }*/
 
 }
 

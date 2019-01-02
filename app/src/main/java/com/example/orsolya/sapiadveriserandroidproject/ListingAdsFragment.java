@@ -75,15 +75,10 @@ public class ListingAdsFragment extends Fragment {
 
                     Advertisement value = dataSnapshot1.getValue( Advertisement.class );
                     // Advertisement ads = new Advertisement();
-                    String title = value.getTitle();
+                   /* String title = value.getTitle();
                     String image = value.getImage();
-                    String shortDescription = value.getShortDescription();
-
-                    //Log.d("ImageUrl",image);
-                    //Log.d("ImageTitle", title);
-                    // Log.d("ImageUrl",image);
-                    // Log.d("ImageTitle", title);
-                    list.add( new Advertisement( title, image, shortDescription ) );
+                    String shortDescription = value.getShortDescription();*/
+                    list.add( value );
 
                 }
 

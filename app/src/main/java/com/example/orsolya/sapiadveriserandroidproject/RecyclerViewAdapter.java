@@ -36,8 +36,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private  List<Advertisement> list;
 
-//    Advertisement currentItem;
-
     public RecyclerViewAdapter(List<Advertisement> list ) {
         this.list = list;
     }
@@ -63,8 +61,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         holder.imageName.setText(list.get(position).getTitle());
-       // holder.imageDescription.setText( list.get( position ).getShortDescription() );
-       // holder.longDescription.setText( list.get( position ).getLongDescription() );
         Glide.with(holder.itemView.getContext())
                 .asBitmap()
                 .load(list.get(position).getImage())
@@ -116,14 +112,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
             Fragment myFragment = new DetailAdvertisementFragment();
 
-            // building the message that I will send to the DetaulAdvertismentPage
+            // building the message that I will send to the DetailAdvertismentPage
             Bundle bundle = new Bundle();
 
             bundle.putString("title",list.get(getPosition()).getTitle() );
             bundle.putString("longDescription",list.get( getPosition() ).getLongDescription());
-            bundle.putString("shortDescription",list.get( getPosition()).getShortDescription() );
-            bundle.putString("phoneNumber",list.get( getPosition()).getPhoneNumber() );
-            bundle.putString("location",list.get( getPosition()).getLocation() );
+            bundle.putString("shortDescription",list.get( getPosition()).getShortDescription());
+            bundle.putString("phoneNumber",list.get( getPosition()).getPhoneNumber());
+            bundle.putString("location",list.get( getPosition()).getLocation());
+            bundle.putString("imageName",list.get( getPosition()).getImage());
+            bundle.putString("identifier",list.get( getPosition()).getIdentifier());
 
             // set Fragmentclass Arguments
             myFragment.setArguments(bundle);

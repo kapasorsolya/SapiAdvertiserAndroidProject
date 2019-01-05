@@ -32,7 +32,7 @@ import static android.support.constraint.Constraints.TAG;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyAdvertisment extends Fragment {
+public class MyAdvertismentFragment extends Fragment {
 
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
@@ -42,7 +42,7 @@ public class MyAdvertisment extends Fragment {
 
     private ArrayList<Advertisement> list;
 
-    public MyAdvertisment() {
+    public MyAdvertismentFragment() {
         // Required empty public constructor
     }
 
@@ -69,8 +69,6 @@ public class MyAdvertisment extends Fragment {
         // this is data fro recycler view
         Log.d( TAG, "initImageBitmaps: preparing bitmaps." );
 
-        //database = FirebaseDatabase.getInstance();
-
         list = new ArrayList<Advertisement>();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -82,9 +80,9 @@ public class MyAdvertisment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     // dataSnapshot is the "issue" node with all children with id 0
-                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         // do something with the individual "issues"
-                        Advertisement ad = issue.getValue(Advertisement.class);
+                        Advertisement ad = dataSnapshot1.getValue(Advertisement.class);
                         list.add(ad);
                     }
                 }
@@ -95,51 +93,7 @@ public class MyAdvertisment extends Fragment {
 
             }
         });
-        /*myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                //list.clear();
 
-                String  currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-                for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
-
-                    Advertisement value = dataSnapshot1.getValue(Advertisement.class);
-                    // Advertisement ads = new Advertisement();
-
-                    Log.d("User IDENTIFIER",currentUid);
-                   list.add(value);
-                    //list.add(value);
-                   /* Toast.makeText(getContext(),value.getUploader(),Toast.LENGTH_LONG).show();
-
-                    if("rGLKFX7MTGailZnXpZT06oJHSY52" == value.getUploader())
-                    {
-                        list.add(value);
-                        Log.d("User IDENTIFIER benne", currentUid);
-                    }*/
-                    /*if(currentUid!=null)
-                    {
-                        if (value != null && value.getUploader() == FirebaseAuth.getInstance().getCurrentUser().getUid()) {
-                            Log.d("User IDENTIFIER", currentUid);
-                            list.add(value);
-                        }
-                    }*/
-
-
-                /*}
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("Hello", "Failed to read value.", error.toException());
-            }
-        });
-
-*/
         // 3. create an adapter
         RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list );
 

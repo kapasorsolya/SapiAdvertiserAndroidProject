@@ -75,19 +75,6 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
         super.onActivityResult( requestCode, resultCode, data );
     }
 
-    private void setImage(Advertisement ad){
-        Log.d(TAG, "setImage: setting te image and name to widgets.");
-
-        TextView name = findViewById(R.id.image_name);
-        name.setText(ad.getTitle());
-
-        ImageView image = findViewById(R.id.image);
-
-        Glide.with(this)
-                .asBitmap()
-                .load(ad.getImage())
-                .into(image);
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

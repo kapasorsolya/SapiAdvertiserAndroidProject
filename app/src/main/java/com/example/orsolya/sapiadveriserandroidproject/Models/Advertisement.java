@@ -141,14 +141,15 @@ public class Advertisement implements Serializable {
     @Override
     public String toString() {
         return "Advertisement{" +
-                "Identifier=" + Identifier +
+                "Identifier='" + Identifier + '\'' +
                 ", Location='" + Location + '\'' +
                 ", LongDescription='" + LongDescription + '\'' +
                 ", ShortDescription='" + ShortDescription + '\'' +
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", Reported=" + Reported +
                 ", Title='" + Title + '\'' +
-                ", Image=" + Image +
+                ", Image='" + Image + '\'' +
+                ", Uploader='" + Uploader + '\'' +
                 '}';
     }
 }

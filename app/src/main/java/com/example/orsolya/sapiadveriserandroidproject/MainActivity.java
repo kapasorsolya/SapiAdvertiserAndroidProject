@@ -1,6 +1,7 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
 
          mOnNavigationItemSelectedListener = findViewById( R.id.navigation );
          mOnNavigationItemSelectedListener.setOnNavigationItemSelectedListener(this);
+
 
         //initalize with start fragment
         //loadFragment( new ListingAdsFragment() );
@@ -129,6 +131,10 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
         }
 
     }
+
+
+
+
 }
 
 

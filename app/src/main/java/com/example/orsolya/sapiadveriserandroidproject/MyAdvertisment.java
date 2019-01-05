@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,7 +103,7 @@ public class MyAdvertisment extends Fragment {
 
 
         // 3. create an adapter
-        RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list);
+        RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list );
 
         mAdapter.notifyDataSetChanged();
         // 4. set adapter

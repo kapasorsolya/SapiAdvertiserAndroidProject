@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ public class MyAdvertisment extends Fragment {
 
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
-    final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
 
@@ -49,7 +50,7 @@ public class MyAdvertisment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate( R.layout.fragment_my__advertisment, container, false );
+        View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
 
         initializeRecyclerView(rootView);
 
@@ -68,29 +69,66 @@ public class MyAdvertisment extends Fragment {
         // this is data fro recycler view
         Log.d( TAG, "initImageBitmaps: preparing bitmaps." );
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("advertisement");
+        //database = FirebaseDatabase.getInstance();
+
         list = new ArrayList<Advertisement>();
-        myRef.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = reference.child("advertisement").orderByChild("uploader").equalTo(currentFirebaseUser.getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    // dataSnapshot is the "issue" node with all children with id 0
+                    for (DataSnapshot issue : dataSnapshot.getChildren()) {
+                        // do something with the individual "issues"
+                        Advertisement ad = issue.getValue(Advertisement.class);
+                        list.add(ad);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        /*myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                list.clear();
+                //list.clear();
+
+                String  currentUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
                     Advertisement value = dataSnapshot1.getValue(Advertisement.class);
                     // Advertisement ads = new Advertisement();
-                    //if(value.getUploader() == currentFirebaseUser.getUid()) {
-                        String title = value.getTitle();
-                        String image = value.getImage();
-                        String shortDescription = value.getShortDescription();
-                       // Log.d("ImageUrl", image);
-                       // Log.d("ImageTitle", title);
-                        list.add(new Advertisement(title, image, shortDescription));
-                   // }
 
-                }
+                    Log.d("User IDENTIFIER",currentUid);
+                   list.add(value);
+                    //list.add(value);
+                   /* Toast.makeText(getContext(),value.getUploader(),Toast.LENGTH_LONG).show();
+
+                    if("rGLKFX7MTGailZnXpZT06oJHSY52" == value.getUploader())
+                    {
+                        list.add(value);
+                        Log.d("User IDENTIFIER benne", currentUid);
+                    }*/
+                    /*if(currentUid!=null)
+                    {
+                        if (value != null && value.getUploader() == FirebaseAuth.getInstance().getCurrentUser().getUid()) {
+                            Log.d("User IDENTIFIER", currentUid);
+                            list.add(value);
+                        }
+                    }*/
+
+
+                /*}
 
             }
 
@@ -101,7 +139,7 @@ public class MyAdvertisment extends Fragment {
             }
         });
 
-
+*/
         // 3. create an adapter
         RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list );
 
@@ -115,50 +153,6 @@ public class MyAdvertisment extends Fragment {
 
 
     }
-
-
-    private void getImagesForTheList() {
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myFirebaseRef = database.getReference( "advertisement" );
-
-        Query queryRef = myFirebaseRef.orderByChild( "advertisement" );
-
-
-        queryRef.addChildEventListener( new ChildEventListener() {
-
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String previousChild) {
-                Advertisement ad = dataSnapshot.getValue( Advertisement.class );
-               // if(ad.getUploader() == currentFirebaseUser.getUid()) {
-
-                    list.add(ad);
-                //}
-
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        } );
-    }
-
 
 
 

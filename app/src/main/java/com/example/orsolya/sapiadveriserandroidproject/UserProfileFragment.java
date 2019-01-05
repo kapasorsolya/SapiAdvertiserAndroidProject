@@ -1,8 +1,14 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,11 +17,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,9 +36,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
+import static android.support.constraint.Constraints.TAG;
 
 
 /**
@@ -40,6 +63,14 @@ public class UserProfileFragment extends Fragment {
     EditText editEmailText;
     EditText editAddressText;
 
+    CircleImageView profileImage;
+
+    private Uri filePath;
+    private  Uri downloadUri;
+
+    private final int PICK_IMAGE_REQUEST_USER = 75;
+
+
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
     public UserProfileFragment() {
@@ -52,7 +83,14 @@ public class UserProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootview = inflater.inflate(R.layout.fragment_profile, container, false);
-
+        rootview.findViewById( R.id.UserProfileImage ).setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),
+                        "Clicked on UserProfileImage", Toast.LENGTH_LONG).show();
+                chooseImage();
+            }
+        } );
         rootview.findViewById(R.id.modifyButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,6 +198,92 @@ public class UserProfileFragment extends Fragment {
 
 
     }
+    private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST_USER);
+
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // In fragment class callback
+        super.onActivityResult( requestCode, resultCode, data );
+        Log.d( "filepathdataUserProfile", data.toString() + ' ' + data.getData().toString() );
+        if (requestCode == PICK_IMAGE_REQUEST_USER && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
+            filePath = data.getData();
+            Glide.with( getActivity().getBaseContext() )
+                    .load( filePath.toString() )
+                    .into( (ImageView) getView().findViewById( R.id.UserProfileImage ) );
+            uploadImage();
+        }
+    }
+
+
+
+    private void uploadImage() {
+        FirebaseStorage storage;
+        StorageReference storageReference;
+        storage = FirebaseStorage.getInstance();
+        storageReference =  storage.getReferenceFromUrl("gs://sapiadveriser.appspot.com/");;
+        if(filePath != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(getContext());
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            final StorageReference ref = storageReference.child( UUID.randomUUID().toString());
+
+
+            ref.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(getContext(), "Uploaded " + filePath, Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "onSuccess: uri= "+ uri.toString());
+                                    downloadUri = uri;
+                                    updateChild(downloadUri.toString());
+                                }
+
+                                private void updateChild(final String s) {
+                                    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    final DatabaseReference ref = database.getReference("users");
+
+                                    final FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+
+
+                                    ref.child(currentFirebaseUser.getPhoneNumber()).child("image").setValue(s);
+
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(getContext(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+
+
+        }
+
+    }
+
 
 }
 

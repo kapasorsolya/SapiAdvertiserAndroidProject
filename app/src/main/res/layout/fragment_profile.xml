@@ -91,16 +91,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image2" />
+            app:layout_constraintTop_toBottomOf="@+id/UserProfileImage" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image2"
+            android:id="@+id/UserProfileImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="30dp"
+            android:clickable="true"
             android:src="@android:drawable/sym_def_app_icon"
             app:layout_constraintBottom_toTopOf="@+id/editTextFirstName"
             app:layout_constraintStart_toEndOf="@+id/signOutBtn"
@@ -132,7 +133,7 @@
             android:backgroundTint="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.222"
-            app:layout_constraintStart_toEndOf="@+id/image2"
+            app:layout_constraintStart_toEndOf="@+id/UserProfileImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button

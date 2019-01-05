@@ -1,5 +1,6 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.example.orsolya.sapiadveriserandroidproject.Models.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -43,11 +53,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final Advertisement item = getItem(position);
         Log.d("ADVERTISEMENT ITEM",item.toString());
         //currentItem = list.get( position );
-        Glide.with(holder.itemView.getContext())
+        /*Glide.with(holder.itemView.getContext())
                 .asBitmap()
-                .load(list.get(position).getImage())
-                .into(holder.image);
+                .load(getCurrentUploaderImage( list.get(position).getUploader(),position ))
+                .into(holder.image);*/
 
+        getCurrentUploaderImage( list.get(position).getUploader(),position,holder );
 
         holder.advertisementTitle.setText(list.get(position).getTitle());
         Glide.with(holder.itemView.getContext())
@@ -62,10 +73,38 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
+    private void getCurrentUploaderImage(String uploader, final int position, final ViewHolder holder){
+         FirebaseDatabase database = FirebaseDatabase.getInstance();
+         DatabaseReference myRef = database.getReference("users/");
+         
+        myRef.child("+16505553434").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                User users = dataSnapshot.getValue(User.class);
+
+
+                Glide.with(holder.itemView.getContext())
+                        .asBitmap()
+                        .load(users.getImage())
+                        .into(holder.image);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("tmz", "Failed to read value.", error.toException());
+            }
+        });
+
+
+
+    }
     @Override
     public int getItemCount() {
         return list==null ? 0 : list.size();
     }
+
 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

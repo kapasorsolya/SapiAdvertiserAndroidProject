@@ -63,13 +63,11 @@ public class UserProfileFragment extends Fragment {
     EditText editEmailText;
     EditText editAddressText;
 
-    CircleImageView profileImage;
-
     private Uri filePath;
     private  Uri downloadUri;
-
     private final int PICK_IMAGE_REQUEST_USER = 75;
 
+    private CircleImageView profileImage;
 
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -120,7 +118,7 @@ public class UserProfileFragment extends Fragment {
                     FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     if(ft!=null)
                     {
-                        ft.replace(R.id.fragment_container, new MyAdvertisment());
+                        ft.replace(R.id.fragment_container, new MyAdvertismentFragment());
                         ft.commit();
                     }
 
@@ -133,6 +131,7 @@ public class UserProfileFragment extends Fragment {
         editPhoneNumberText = rootview.findViewById(R.id.editPhoneNumberText);
         editEmailText = rootview.findViewById(R.id.editEmailText);
         editAddressText = rootview.findViewById(R.id.editAddressText);
+        profileImage  = rootview.findViewById( R.id.UserProfileImage );
 
 
         // Write a message to the database
@@ -164,6 +163,11 @@ public class UserProfileFragment extends Fragment {
                     Log.d("USER", users.getFirstName().toString());
                     editEmailText.setText(users.getEmail());
                     editAddressText.setText(users.getAddress());
+
+
+                    Glide.with( getContext() )
+                            .load(users.getImage())
+                            .into( (ImageView) profileImage );
                 }
 
                 @Override

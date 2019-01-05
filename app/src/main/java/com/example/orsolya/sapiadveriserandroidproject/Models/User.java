@@ -1,17 +1,15 @@
 package com.example.orsolya.sapiadveriserandroidproject.Models;
 
-import com.google.firebase.database.DatabaseReference;
-
-import java.util.HashMap;
-import java.util.Map;
+import android.net.Uri;
 
 public  class User {
-    public String firstName;
-    public String lastName;
-    public String phoneNumber;
-    public String email;
-    public String address;
-    public String userid;
+    private String firstName;
+    private String lastName;
+    private String phoneNumber;
+    private String email;
+    private String address;
+    private String userid;
+    private String image;
 
     public User(){
 
@@ -37,6 +35,16 @@ public  class User {
         this.email = email;
         this.address = address;
         this.userid = userid;
+    }
+
+    public User(String firstName, String lastName, String phoneNumber, String email, String address, String userid, String image) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.address = address;
+        this.userid = userid;
+        this.image = image;
     }
 
     public String getUserid() {
@@ -87,4 +95,24 @@ public  class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", userid='" + userid + '\'' +
+                ", image='" + image + '\'' +
+                '}';
+    }
 }

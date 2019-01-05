@@ -1,6 +1,7 @@
 package com.example.orsolya.sapiadveriserandroidproject;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +43,10 @@ public class DetailAdvertisementFragment extends Fragment {
     private TextView mLocation;
     private ImageView mImage;
     private ImageButton mReportButton;
-
+    private ImageButton mShareButton;
     private String mIdentifier;
+
+    private Advertisement currentAdvertisement;
 
     public DetailAdvertisementFragment() {
         // Required empty public constructor
@@ -50,7 +54,7 @@ public class DetailAdvertisementFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate( R.layout.fragment_detail_advertisement, container, false );
 
@@ -71,6 +75,13 @@ public class DetailAdvertisementFragment extends Fragment {
         mLocation = view.findViewById( R.id.txt_location2 );
         mImage = view.findViewById(R.id.adImage);
         mReportButton = view.findViewById(R.id.reportButton);
+        mShareButton = view.findViewById( R.id.shareButton );
+
+
+        //create a new instance and building an advertisement model
+        currentAdvertisement = new Advertisement();
+
+        setCurrentAdvertisementItem(titleText,longDescriptionText,shortDescriptionText,locationText,phoneNumberText,imageNameText,mIdentifier);
 
         //set fields with data
         mTitle.setText( titleText );
@@ -79,9 +90,11 @@ public class DetailAdvertisementFragment extends Fragment {
         mPhoneNumber.setText( phoneNumberText );
         mLocation.setText( locationText );
 
+        //set image
         Glide.with(getContext())
                 .load(imageNameText)
-                .into(mImage); //Your imageView variable
+                .into(mImage);
+
 
 
 
@@ -93,17 +106,43 @@ public class DetailAdvertisementFragment extends Fragment {
                 DatabaseReference ref = database.getReference("advertisement");
 
                 ref.child(mIdentifier).child("reported").setValue(true);
+                currentAdvertisement.setReported( true );
+
                 Toast.makeText( getContext(),"The Advertisement has been reported",Toast.LENGTH_LONG).show();
 
+           }
+       } );
+
+       mShareButton.setOnClickListener( new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent intent = new Intent( Intent.ACTION_SEND );
+               intent.setType( "text/plain" ) ;
+               String shareBody = currentAdvertisement.toString();
+               String shareSubject = "Your Subject here";
+               intent.putExtra( Intent.EXTRA_SUBJECT,shareSubject );
+               intent.putExtra( Intent.EXTRA_TEXT,shareBody );
+               startActivity( Intent.createChooser( intent,"Share using " ) );
            }
        } );
         // Inflate the layout for this fragment
         return view;
     }
 
+    private void setCurrentAdvertisementItem(String titleText, String longDescriptionText, String shortDescriptionText, String locationText,
+                                             String phoneNumberText, String imageNameText, String mIdentifier) {
+
+        currentAdvertisement.setImage( imageNameText );
+        currentAdvertisement.setTitle( titleText );
+        currentAdvertisement.setLongDescription(longDescriptionText);
+        currentAdvertisement.setShortDescription( shortDescriptionText );
+        currentAdvertisement.setLocation( locationText );
+        currentAdvertisement.setPhoneNumber( phoneNumberText );
+        currentAdvertisement.setImage( imageNameText );
+        currentAdvertisement.setIdentifier(mIdentifier);
 
 
-
+    }
 
 
 }

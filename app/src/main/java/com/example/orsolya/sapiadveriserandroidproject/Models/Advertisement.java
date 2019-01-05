@@ -150,7 +150,6 @@ public class Advertisement implements Serializable {
                 ", Title='" + Title + '\'' +
                 ", Image='" + Image + '\'' +
                 ", Uploader='" + Uploader + '\'' +
-                ", advertisements=" + advertisements +
                 '}';
     }
 }

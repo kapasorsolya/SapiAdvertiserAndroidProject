@@ -124,16 +124,10 @@ public class AddAdvertisementFragment extends Fragment {
                 uploadImage();
                 FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
 
-                //DatabaseReference newPostRef = ref.push();
-
-               /* newAd=new Advertisement(currentFirebaseUser.getUid(),mLocation,mLongDescription,mShortDescription,
-                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid()  );
-
-                newPostRef.setValue(newAd);*/
                 Map<String, Object> adsDataUpdates = new HashMap<>();
                 PKeyCurrentTime = System.currentTimeMillis();
                 adsDataUpdates.put(PKeyCurrentTime.toString(),new Advertisement(PKeyCurrentTime.toString(),mLocation,mLongDescription,mShortDescription,
-                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid()  ));
+                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid() ,currentFirebaseUser.getPhoneNumber() ));
 
                 ref.updateChildren(adsDataUpdates);
 

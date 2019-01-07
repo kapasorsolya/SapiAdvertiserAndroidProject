@@ -58,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .load(getCurrentUploaderImage( list.get(position).getUploader(),position ))
                 .into(holder.image);*/
 
-        getCurrentUploaderImage( list.get(position).getUploader(),position,holder );
+        getCurrentUploaderImage( list.get(position).getUploaderPhoneNumber(),position,holder );
 
         holder.advertisementTitle.setText(list.get(position).getTitle());
         Glide.with(holder.itemView.getContext())
@@ -73,11 +73,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    private void getCurrentUploaderImage(String uploader, final int position, final ViewHolder holder){
+    private void getCurrentUploaderImage(String uploaderPhoneNumber, final int position, final ViewHolder holder){
          FirebaseDatabase database = FirebaseDatabase.getInstance();
          DatabaseReference myRef = database.getReference("users/");
-         
-        myRef.child("+16505553434").addValueEventListener(new ValueEventListener() {
+
+        myRef.child(uploaderPhoneNumber).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

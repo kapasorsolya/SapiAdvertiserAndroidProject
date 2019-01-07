@@ -17,8 +17,8 @@ public class Advertisement implements Serializable {
     private String Title;
     private String Image;
     private String Uploader;
+    private String UploaderPhoneNumber;
 
-    public Map<String, Object> advertisements = new HashMap<>();
 
     public Advertisement(String title, String image, String shortDescription) {
         this.Title = title;
@@ -29,7 +29,20 @@ public class Advertisement implements Serializable {
     public Advertisement() {
     }
 
-
+    public Advertisement(String identifier, String location, String longDescription, String shortDescription,
+                         String phoneNumber, boolean reported, String title, String image, String uploader,
+                         String uploaderPhoneNumber) {
+        Identifier = identifier;
+        Location = location;
+        LongDescription = longDescription;
+        ShortDescription = shortDescription;
+        PhoneNumber = phoneNumber;
+        Reported = reported;
+        Title = title;
+        Image = image;
+        Uploader = uploader;
+        UploaderPhoneNumber = uploaderPhoneNumber;
+    }
 
     public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image, String uploader) {
         Identifier = identifier;
@@ -43,21 +56,6 @@ public class Advertisement implements Serializable {
         Uploader = uploader;
     }
 
-    @Exclude
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("identifier", Identifier);
-        result.put("location", Location);
-        result.put("longDescription", LongDescription);
-        result.put("shortDescription", ShortDescription);
-        result.put("phoneNumber", PhoneNumber);
-        result.put("reported", Reported);
-        result.put("title", Title);
-        result.put("image", Image);
-        result.put("uploader", Uploader);
-
-        return result;
-    }
 
     public String getIdentifier() {
         return Identifier;
@@ -136,6 +134,14 @@ public class Advertisement implements Serializable {
 
     public void setUploader(String uploader) {
         Uploader = uploader;
+    }
+
+    public String getUploaderPhoneNumber() {
+        return UploaderPhoneNumber;
+    }
+
+    public void setUploaderPhoneNumber(String uploaderPhoneNumber) {
+        UploaderPhoneNumber = uploaderPhoneNumber;
     }
 
     @Override

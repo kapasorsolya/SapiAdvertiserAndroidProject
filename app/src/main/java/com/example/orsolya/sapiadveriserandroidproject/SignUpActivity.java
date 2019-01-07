@@ -95,11 +95,11 @@ public class SignUpActivity extends Activity {
 
         DatabaseReference usersRef = database.getReference("users");
 
-        Map<String, User> users = new HashMap<>();
-        users.put(currentFirebaseUser.getPhoneNumber(), new User(firstNameText, lastNameText, phoneNumberText));
+        Map<String, Object> users = new HashMap<>();
+        users.put(phoneNumberText, new User(firstNameText, lastNameText, phoneNumberText));
         //users.put("gracehop", new User("December 9, 1906", "Grace Hopper"));
 
-        usersRef.setValue(users);
+        usersRef.updateChildren(users);
 
 
     }

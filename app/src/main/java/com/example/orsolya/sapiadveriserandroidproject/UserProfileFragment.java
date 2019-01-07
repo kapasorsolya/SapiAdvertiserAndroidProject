@@ -165,7 +165,7 @@ public class UserProfileFragment extends Fragment {
                     editAddressText.setText(users.getAddress());
 
 
-                    Glide.with( getContext() )
+                    Glide.with( getActivity().getBaseContext() )
                             .load(users.getImage())
                             .into( (ImageView) profileImage );
                 }

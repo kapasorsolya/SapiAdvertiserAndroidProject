@@ -45,6 +45,7 @@ public class DetailAdvertisementFragment extends Fragment {
     private ImageButton mReportButton;
     private ImageButton mShareButton;
     private String mIdentifier;
+    private CircleImageView mUploader;
 
     private Advertisement currentAdvertisement;
 
@@ -65,6 +66,7 @@ public class DetailAdvertisementFragment extends Fragment {
         String locationText = getArguments().getString("location");
         String phoneNumberText = getArguments().getString("phoneNumber");
         String imageNameText = getArguments().getString( "imageName" ) ;
+        String uploaderImageText= getArguments().getString( "uploaderImageName");
         this.mIdentifier = getArguments().getString( "identifier" );
 
         //find the references
@@ -76,6 +78,7 @@ public class DetailAdvertisementFragment extends Fragment {
         mImage = view.findViewById(R.id.adImage);
         mReportButton = view.findViewById(R.id.reportButton);
         mShareButton = view.findViewById( R.id.shareButton );
+        mUploader = view.findViewById( R.id.userProfileImage2 );
 
 
         //create a new instance and building an advertisement model
@@ -94,6 +97,12 @@ public class DetailAdvertisementFragment extends Fragment {
         Glide.with(getContext())
                 .load(imageNameText)
                 .into(mImage);
+
+        //set image
+        Glide.with(getContext())
+                .asBitmap()
+                .load(uploaderImageText)
+                .into( (ImageView)mUploader);
 
 
 

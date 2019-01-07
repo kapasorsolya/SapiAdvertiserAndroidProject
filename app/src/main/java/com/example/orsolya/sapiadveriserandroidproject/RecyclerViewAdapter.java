@@ -39,6 +39,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.list = list;
     }
 
+    public Bundle bundle ;
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -88,6 +90,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         .asBitmap()
                         .load(users.getImage())
                         .into(holder.image);
+                bundle=new Bundle();
+                bundle.putString( "uploaderImageName", users.getImage() );
             }
 
             @Override
@@ -141,7 +145,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             Fragment myFragment = new DetailAdvertisementFragment();
 
             // building the message that I will send to the DetailAdvertismentPage
-            Bundle bundle = new Bundle();
 
             bundle.putString("title",list.get(getPosition()).getTitle() );
             bundle.putString("longDescription",list.get( getPosition() ).getLongDescription());
@@ -150,6 +153,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             bundle.putString("location",list.get( getPosition()).getLocation());
             bundle.putString("imageName",list.get( getPosition()).getImage());
             bundle.putString("identifier",list.get( getPosition()).getIdentifier());
+
+
+
 
             // set Fragmentclass Arguments
             myFragment.setArguments(bundle);

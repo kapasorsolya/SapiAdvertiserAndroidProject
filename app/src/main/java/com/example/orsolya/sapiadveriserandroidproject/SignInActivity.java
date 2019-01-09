@@ -53,6 +53,7 @@ public class SignInActivity extends Activity {
             @Override
             public void onClick(View v) {
                 sendVerificationCode();
+                findViewById(R.id.buttonSignIn).setEnabled(true);
             }
         });
 

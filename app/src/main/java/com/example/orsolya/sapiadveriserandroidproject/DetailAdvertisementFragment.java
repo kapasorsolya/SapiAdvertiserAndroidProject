@@ -7,9 +7,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -60,6 +62,20 @@ public class DetailAdvertisementFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate( R.layout.fragment_detail_advertisement, container, false );
+
+        //hide navigation bar
+        //View decorView = getActivity().getWindow().getDecorView();
+        // Hide both the navigation bar and the status bar.
+        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
+        // a general rule, you should design your app to hide the status bar whenever you
+        // hide the navigation bar.
+        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        //decorView.setSystemUiVisibility(uiOptions);
+
+        //.findViewById(R.id.navigation) ;
+        //button_navigation.setVisibility(View.INVISIBLE);
+       // inflater.g
+        ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.INVISIBLE);
 
         //get the passed data
         String titleText = getArguments().getString("title");
@@ -153,6 +169,18 @@ public class DetailAdvertisementFragment extends Fragment {
         currentAdvertisement.setIdentifier(mIdentifier);
 
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.VISIBLE);
     }
 
 

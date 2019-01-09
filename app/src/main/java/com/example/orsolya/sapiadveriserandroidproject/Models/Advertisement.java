@@ -18,6 +18,7 @@ public class Advertisement implements Serializable {
     private String Image;
     private String Uploader;
     private String UploaderPhoneNumber;
+    private int counter;
 
 
     public Advertisement(String title, String image, String shortDescription) {
@@ -94,7 +95,19 @@ public class Advertisement implements Serializable {
         Image = image;
     }
 
-
+    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image, String uploader, String uploaderPhoneNumber, int counter) {
+        Identifier = identifier;
+        Location = location;
+        LongDescription = longDescription;
+        ShortDescription = shortDescription;
+        PhoneNumber = phoneNumber;
+        Reported = reported;
+        Title = title;
+        Image = image;
+        Uploader = uploader;
+        UploaderPhoneNumber = uploaderPhoneNumber;
+        this.counter = counter;
+    }
 
     public String getPhoneNumber() {
         return PhoneNumber;
@@ -144,6 +157,14 @@ public class Advertisement implements Serializable {
         UploaderPhoneNumber = uploaderPhoneNumber;
     }
 
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
     @Override
     public String toString() {
         return "Advertisement{" +
@@ -156,6 +177,7 @@ public class Advertisement implements Serializable {
                 ", Title='" + Title + '\'' +
                 ", Image='" + Image + '\'' +
                 ", Uploader='" + Uploader + '\'' +
+                ", Counter='" + counter + '\'' +
                 '}';
     }
 }

@@ -92,7 +92,19 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
                 .into(mImage);
 
 
-        // Inflate the layout for this fragment
+        // setLISTENERES
+        mShareButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( Intent.ACTION_SEND );
+                intent.setType( "text/plain" ) ;
+                String shareBody = currentAdvertisement.toString();
+                String shareSubject = "Your Subject here";
+                intent.putExtra( Intent.EXTRA_SUBJECT,shareSubject );
+                intent.putExtra( Intent.EXTRA_TEXT,shareBody );
+                startActivity( Intent.createChooser( intent,"Share using " ) );
+            }
+        } );
         return view;
     }
 

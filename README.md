@@ -1,4 +1,4 @@
-"# SapiAdvertiserAndroidProject" 
+# SapiAdvertiserAndroidProject
 
 Prerequisites: Android Studio, Java Development Kit(JDK), Phone/Tablet or Emulator.
 

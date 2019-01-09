@@ -18,7 +18,7 @@ public class Advertisement implements Serializable {
     private String Image;
     private String Uploader;
     private String UploaderPhoneNumber;
-    private int counter;
+    private int viewersNumber;
 
 
     public Advertisement(String title, String image, String shortDescription) {
@@ -45,7 +45,8 @@ public class Advertisement implements Serializable {
         UploaderPhoneNumber = uploaderPhoneNumber;
     }
 
-    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image, String uploader) {
+    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber,
+                         boolean reported, String title, String image, String uploader, String uploaderPhoneNumber, int viewersNumber) {
         Identifier = identifier;
         Location = location;
         LongDescription = longDescription;
@@ -55,8 +56,9 @@ public class Advertisement implements Serializable {
         Title = title;
         Image = image;
         Uploader = uploader;
+        UploaderPhoneNumber = uploaderPhoneNumber;
+        this.viewersNumber = viewersNumber;
     }
-
 
     public String getIdentifier() {
         return Identifier;
@@ -93,20 +95,6 @@ public class Advertisement implements Serializable {
     public Advertisement(String title, String image) {
         Title = title;
         Image = image;
-    }
-
-    public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber, boolean reported, String title, String image, String uploader, String uploaderPhoneNumber, int counter) {
-        Identifier = identifier;
-        Location = location;
-        LongDescription = longDescription;
-        ShortDescription = shortDescription;
-        PhoneNumber = phoneNumber;
-        Reported = reported;
-        Title = title;
-        Image = image;
-        Uploader = uploader;
-        UploaderPhoneNumber = uploaderPhoneNumber;
-        this.counter = counter;
     }
 
     public String getPhoneNumber() {
@@ -157,12 +145,12 @@ public class Advertisement implements Serializable {
         UploaderPhoneNumber = uploaderPhoneNumber;
     }
 
-    public int getCounter() {
-        return counter;
+    public int getViewersNumber() {
+        return viewersNumber;
     }
 
-    public void setCounter(int counter) {
-        this.counter = counter;
+    public void setViewersNumber(int viewersNumber) {
+        this.viewersNumber = viewersNumber;
     }
 
     @Override
@@ -177,7 +165,7 @@ public class Advertisement implements Serializable {
                 ", Title='" + Title + '\'' +
                 ", Image='" + Image + '\'' +
                 ", Uploader='" + Uploader + '\'' +
-                ", Counter='" + counter + '\'' +
+                ", ViewersNumber='" + viewersNumber + '\'' +
                 '}';
     }
 }

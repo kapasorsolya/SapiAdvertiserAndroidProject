@@ -58,15 +58,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         final Advertisement item = getItem(position);
         Log.d("ADVERTISEMENT ITEM",item.toString());
-        //currentItem = list.get( position );
-        /*Glide.with(holder.itemView.getContext())
-                .asBitmap()
-                .load(getCurrentUploaderImage( list.get(position).getUploader(),position ))
-                .into(holder.image);*/
 
         getCurrentUploaderImage( list.get(position).getUploaderPhoneNumber(),position,holder );
 
         holder.advertisementTitle.setText(list.get(position).getTitle());
+        holder.counter.setText( String.valueOf(  list.get( position ).getViewersNumber() ));
         Glide.with(holder.itemView.getContext())
                 .asBitmap()
                 .load(list.get(position).getImage())
@@ -122,7 +118,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         RelativeLayout parentLayout;
         TextView someDetail;
         ImageView adImage;
-        //Advertisement ad;
+        TextView counter;
 
 
         ViewHolder(View itemView) {
@@ -132,7 +128,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             parentLayout = itemView.findViewById( R.id.parent_layout );
             someDetail = itemView.findViewById( R.id.detail );
             adImage = itemView.findViewById( R.id.adimageView );
-
+            counter = itemView.findViewById( R.id.counter );
             itemView.setOnClickListener( this );
 
 
@@ -143,6 +139,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void onClick(View v) {
             Log.d( TAG, "onClick " + getPosition() + " " );
 
+            updateViewersNumber( list,v );
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
             Fragment myFragment = new DetailAdvertisementFragment();
             /*if (((AppCompatActivity) v.getContext()).getSupportFragmentManager().getBackStackEntryCount() > 1) {
@@ -160,10 +157,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 }
             }*/
 
-
             // building the message that I will send to the DetailAdvertismentPage
-
-
 
             bundle.putString( "title", list.get( getPosition() ).getTitle() );
             bundle.putString( "longDescription", list.get( getPosition() ).getLongDescription() );
@@ -185,6 +179,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         }
+        private void updateViewersNumber(final List<Advertisement> list, View view) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference myRef = database.getReference( "advertisement/" );
+
+            final TextView counter = view.findViewById( R.id.counter );
+
+            myRef.child( list.get( getPosition() ).getIdentifier()).addListenerForSingleValueEvent( new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Advertisement ad = dataSnapshot.getValue( Advertisement.class );
+
+                    ad.setViewersNumber( ad.getViewersNumber()+1 );
+
+                    int followingViewersNumber=ad.getViewersNumber();
+                    myRef.child(ad.getIdentifier()).child("viewersNumber").setValue(followingViewersNumber);
+                    CharSequence s =String.valueOf(followingViewersNumber);
+                    counter.setText(s );
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w( "tmz", "Failed to read value.", error.toException() );
+                }
+            } );
+
+        }
+
 
 
     }

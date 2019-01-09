@@ -21,7 +21,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,6 +55,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         getCurrentUploaderImage( list.get( position ).getUploaderPhoneNumber(), position, holder );
 
         holder.advertisementTitle.setText( list.get( position ).getTitle() );
+        holder.counter.setText( String.valueOf(  list.get( position ).getViewersNumber() ));
         Glide.with( holder.itemView.getContext() )
                 .asBitmap()
                 .load( list.get( position ).getImage() )
@@ -108,6 +111,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         TextView someDetail;
         ImageView adImage;
         //Advertisement ad;
+        TextView counter;
 
 
         ViewHolder(View itemView) {
@@ -117,6 +121,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             parentLayout = itemView.findViewById( R.id.parent_layout );
             someDetail = itemView.findViewById( R.id.detail );
             adImage = itemView.findViewById( R.id.adimageView );
+            counter = itemView.findViewById( R.id.counter );
 
             itemView.setOnClickListener( this );
 
@@ -140,6 +145,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             bundle.putString( "identifier", list.get( getPosition() ).getIdentifier() );
 
 
+            updateViewersNumber(list,v);
             // set Fragmentclass Arguments
             myFragment.setArguments( bundle );
 
@@ -149,6 +155,36 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                     .addToBackStack( null )
                     .commit();
 
+
+        }
+
+        private void updateViewersNumber(final List<Advertisement> list, View view) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference myRef = database.getReference( "advertisement/" );
+
+            final TextView counter = view.findViewById( R.id.counter );
+
+            myRef.child( list.get( getPosition() ).getIdentifier()).addListenerForSingleValueEvent( new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Advertisement ad = dataSnapshot.getValue( Advertisement.class );
+
+                    ad.setViewersNumber( ad.getViewersNumber()+1 );
+
+                    int followingViewersNumber=ad.getViewersNumber();
+                    myRef.child(ad.getIdentifier()).child("viewersNumber").setValue(followingViewersNumber);
+                    CharSequence s =String.valueOf(followingViewersNumber);
+                    counter.setText(s );
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w( "tmz", "Failed to read value.", error.toException() );
+                }
+            } );
 
         }
 

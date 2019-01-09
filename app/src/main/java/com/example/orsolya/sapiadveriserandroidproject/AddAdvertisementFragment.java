@@ -128,7 +128,7 @@ public class AddAdvertisementFragment extends Fragment {
                 Map<String, Object> adsDataUpdates = new HashMap<>();
                 PKeyCurrentTime = System.currentTimeMillis();
                 adsDataUpdates.put(PKeyCurrentTime.toString(),new Advertisement(PKeyCurrentTime.toString(),mLocation,mLongDescription,mShortDescription,
-                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid() ,currentFirebaseUser.getPhoneNumber() ));
+                        mPhoneNumber, false,mTitle,"-",currentFirebaseUser.getUid() ,currentFirebaseUser.getPhoneNumber(),0 ));
 
                 ref.updateChildren(adsDataUpdates);
 

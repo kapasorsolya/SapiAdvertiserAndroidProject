@@ -137,7 +137,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View v) {
-            Log.d( TAG, "onClick " + getPosition() + " " );
+            Log.d( TAG, "onClick " + getLayoutPosition() + " " );
 
             updateViewersNumber( list,v );
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
@@ -159,13 +159,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             // building the message that I will send to the DetailAdvertismentPage
 
-            bundle.putString( "title", list.get( getPosition() ).getTitle() );
-            bundle.putString( "longDescription", list.get( getPosition() ).getLongDescription() );
-            bundle.putString( "shortDescription", list.get( getPosition() ).getShortDescription() );
-            bundle.putString( "phoneNumber", list.get( getPosition() ).getPhoneNumber() );
-            bundle.putString( "location", list.get( getPosition() ).getLocation() );
-            bundle.putString( "imageName", list.get( getPosition() ).getImage() );
-            bundle.putString( "identifier", list.get( getPosition() ).getIdentifier() );
+            bundle.putString( "title", list.get( getLayoutPosition() ).getTitle() );
+            bundle.putString( "longDescription", list.get( getLayoutPosition() ).getLongDescription() );
+            bundle.putString( "shortDescription", list.get( getLayoutPosition() ).getShortDescription() );
+            bundle.putString( "phoneNumber", list.get( getLayoutPosition() ).getPhoneNumber() );
+            bundle.putString( "location", list.get( getLayoutPosition() ).getLocation() );
+            bundle.putString( "imageName", list.get( getLayoutPosition() ).getImage() );
+            bundle.putString( "identifier", list.get( getLayoutPosition() ).getIdentifier() );
 
 
             // set Fragmentclass Arguments
@@ -185,7 +185,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             final TextView counter = view.findViewById( R.id.counter );
 
-            myRef.child( list.get( getPosition() ).getIdentifier()).addListenerForSingleValueEvent( new ValueEventListener() {
+            myRef.child( list.get( getLayoutPosition() ).getIdentifier()).addListenerForSingleValueEvent( new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 

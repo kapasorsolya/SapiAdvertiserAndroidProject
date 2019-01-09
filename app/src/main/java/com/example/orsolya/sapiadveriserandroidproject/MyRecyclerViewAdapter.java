@@ -131,18 +131,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
         @Override
         public void onClick(View v) {
-            Log.d( TAG, "onClick " + getPosition() + " " );
+            Log.d( TAG, "onClick " + getLayoutPosition() + " " );
 
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
             Fragment myFragment = new MyAdvertisementWithDetailFragment();
 
-            bundle.putString( "title", list.get( getPosition() ).getTitle() );
-            bundle.putString( "longDescription", list.get( getPosition() ).getLongDescription() );
-            bundle.putString( "shortDescription", list.get( getPosition() ).getShortDescription() );
-            bundle.putString( "phoneNumber", list.get( getPosition() ).getPhoneNumber() );
-            bundle.putString( "location", list.get( getPosition() ).getLocation() );
-            bundle.putString( "imageName", list.get( getPosition() ).getImage() );
-            bundle.putString( "identifier", list.get( getPosition() ).getIdentifier() );
+            bundle.putString( "title", list.get( getLayoutPosition() ).getTitle() );
+            bundle.putString( "longDescription", list.get( getLayoutPosition() ).getLongDescription() );
+            bundle.putString( "shortDescription", list.get( getLayoutPosition() ).getShortDescription() );
+            bundle.putString( "phoneNumber", list.get( getLayoutPosition() ).getPhoneNumber() );
+            bundle.putString( "location", list.get( getLayoutPosition() ).getLocation() );
+            bundle.putString( "imageName", list.get( getLayoutPosition() ).getImage() );
+            bundle.putString( "identifier", list.get( getLayoutPosition() ).getIdentifier() );
 
 
             updateViewersNumber(list,v);
@@ -164,7 +164,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
             final TextView counter = view.findViewById( R.id.counter );
 
-            myRef.child( list.get( getPosition() ).getIdentifier()).addListenerForSingleValueEvent( new ValueEventListener() {
+            myRef.child( list.get( getLayoutPosition() ).getIdentifier()).addListenerForSingleValueEvent( new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 

@@ -142,8 +142,8 @@
 
         <ImageView
             android:id="@+id/adImage"
-            android:layout_width="386dp"
-            android:layout_height="107dp"
+            android:layout_width="380dp"
+            android:layout_height="112dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"

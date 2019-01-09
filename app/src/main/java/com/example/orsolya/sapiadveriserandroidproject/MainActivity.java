@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
     public void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add( R.id.fragment_container, fragment, fragment.toString() );
+        fragmentTransaction.add( R.id.fragment_container, fragment, fragment.getTag() );
         fragmentTransaction.commit();
     }
 
@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity  implements FragmentChangeOn
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             if(ft!=null)
             {
-                ft.replace(R.id.fragment_container, fragment);
+               // Toast.makeText( getBaseContext(),fragment.getTag(),Toast.LENGTH_SHORT).show();
+                ft.replace(R.id.fragment_container, fragment,fragment.getTag());
                 ft.commit();
             }
 

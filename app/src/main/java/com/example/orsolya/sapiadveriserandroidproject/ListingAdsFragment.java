@@ -32,6 +32,7 @@ public class ListingAdsFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
 
+    private static final String TAG = "ListingAdsFragment";
     private ArrayList<Advertisement> list;
 
     //private TextView someDetail;
@@ -104,6 +105,10 @@ public class ListingAdsFragment extends Fragment {
         recyclerView.setItemAnimator( new DefaultItemAnimator() );
 
 
+    }
+
+    public static String getTAG() {
+        return TAG;
     }
 }
 

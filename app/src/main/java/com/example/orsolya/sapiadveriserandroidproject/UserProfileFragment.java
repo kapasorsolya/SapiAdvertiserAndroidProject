@@ -67,6 +67,8 @@ public class UserProfileFragment extends Fragment {
     private  Uri downloadUri;
     private final int PICK_IMAGE_REQUEST_USER = 75;
 
+    private static final String TAG = "MyAdvertisementFragment";
+
     private CircleImageView profileImage;
 
     FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();

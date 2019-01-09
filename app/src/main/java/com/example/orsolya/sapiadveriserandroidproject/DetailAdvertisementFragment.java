@@ -47,6 +47,8 @@ public class DetailAdvertisementFragment extends Fragment {
     private String mIdentifier;
     private CircleImageView mUploader;
 
+    private static final String TAG = "DetailAdvertisementFragment";
+
     private Advertisement currentAdvertisement;
 
     public DetailAdvertisementFragment() {
@@ -154,4 +156,7 @@ public class DetailAdvertisementFragment extends Fragment {
     }
 
 
+    public static String getTAG() {
+        return TAG;
+    }
 }

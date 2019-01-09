@@ -37,8 +37,11 @@ public class MyAdvertismentFragment extends Fragment {
     private FirebaseDatabase database ;
     private DatabaseReference myRef;
     private FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    private static final String TAG = "MyAdvertisementFragment";
 
-
+    public static String getTAG() {
+        return TAG;
+    }
 
     private ArrayList<Advertisement> list;
 
@@ -95,7 +98,7 @@ public class MyAdvertismentFragment extends Fragment {
         });
 
         // 3. create an adapter
-        RecyclerViewAdapter mAdapter= new RecyclerViewAdapter( list );
+        MyRecyclerViewAdapter mAdapter= new MyRecyclerViewAdapter( list );
 
         mAdapter.notifyDataSetChanged();
         // 4. set adapter

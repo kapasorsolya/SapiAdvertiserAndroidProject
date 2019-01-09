@@ -141,8 +141,8 @@
 
         <ImageView
             android:id="@+id/adImage"
-            android:layout_width="386dp"
-            android:layout_height="101dp"
+            android:layout_width="380dp"
+            android:layout_height="97dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
@@ -150,7 +150,7 @@
             android:layout_marginRight="8dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_location_text"
             app:srcCompat="@drawable/ic_sapilogo" />
@@ -161,7 +161,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="@string/title"

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,15 @@ import com.bumptech.glide.Glide;
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.example.orsolya.sapiadveriserandroidproject.Models.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -43,6 +51,9 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
 
     private Advertisement currentAdvertisement;
 
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    //DatabaseReference myRef = database.getReference("advertisment");
+
 
     public MyAdvertisementWithDetailFragment() {
         // Required empty public constructor
@@ -55,6 +66,9 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view=  inflater.inflate( R.layout.fragment_my_advertisement_with_detail, container, false );
+
+        //bottomnavigation set invisible
+        ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.INVISIBLE);
 
         //get the passed data
         String titleText = getArguments().getString("title");
@@ -89,6 +103,7 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
         mShortDescription.setText( shortDescriptionText );
         mPhoneNumber.setText( phoneNumberText );
         mLocation.setText( locationText );
+
 
         //set image
         Glide.with(getContext())
@@ -136,6 +151,15 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
                 ref.child(currentAdvertisement.getIdentifier()).child("deleted").setValue(true);
             }
         } );
+
+        view.findViewById(R.id.modifyBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateData();
+                Toast.makeText(getContext(),
+                        "Modify was Successfull", Toast.LENGTH_LONG).show();
+            }
+        });
         return view;
     }
 
@@ -158,4 +182,22 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
     public static String getTAG() {
         return TAG;
     }
+
+    private void updateData() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref= database.getReference("advertisement/"+mIdentifier);
+
+        String longDescription = mLongDescription.getText().toString();
+        String shortDescription = mShortDescription.getText().toString();
+        String phoneNumber = mPhoneNumber.getText().toString();
+        String location = mLocation.getText().toString();
+
+        ref.child("longDescription").setValue(longDescription);
+        ref.child("sortDescription").setValue(shortDescription);
+        ref.child("location").setValue(location);
+        ref.child("phoneNumber").setValue(phoneNumber);
+
+    }
+
+
 }

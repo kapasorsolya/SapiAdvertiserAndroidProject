@@ -55,6 +55,9 @@ public class MyAdvertismentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate( R.layout.fragment_advertisment_list, container, false );
 
+        //bottomnavigation set invisible
+        ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.INVISIBLE);
+
         initializeRecyclerView(rootView);
 
 

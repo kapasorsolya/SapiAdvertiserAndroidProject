@@ -162,7 +162,7 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
         String location = mLocation.getText().toString();
 
         ref.child("longDescription").setValue(longDescription);
-        ref.child("sortDescription").setValue(shortDescription);
+        ref.child("shortDescription").setValue(shortDescription);
         ref.child("location").setValue(location);
         ref.child("phoneNumber").setValue(phoneNumber);
 

@@ -57,6 +57,7 @@ public class MyAdvertismentFragment extends Fragment {
 
         initializeRecyclerView(rootView);
 
+
         return rootView;
 
     }

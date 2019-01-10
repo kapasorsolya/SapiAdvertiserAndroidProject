@@ -18,6 +18,7 @@ public class Advertisement implements Serializable {
     private String Image;
     private String Uploader;
     private String UploaderPhoneNumber;
+    private boolean deleted;
     private int viewersNumber;
 
     public Advertisement(String location, String longDescription, String shortDescription, String phoneNumber) {
@@ -49,7 +50,9 @@ public class Advertisement implements Serializable {
         Image = image;
         Uploader = uploader;
         UploaderPhoneNumber = uploaderPhoneNumber;
+        deleted = false;
     }
+
 
     public Advertisement(String identifier, String location, String longDescription, String shortDescription, String phoneNumber,
                          boolean reported, String title, String image, String uploader, String uploaderPhoneNumber, int viewersNumber) {
@@ -64,6 +67,7 @@ public class Advertisement implements Serializable {
         Uploader = uploader;
         UploaderPhoneNumber = uploaderPhoneNumber;
         this.viewersNumber = viewersNumber;
+        deleted = false;
     }
 
     public String getIdentifier() {
@@ -96,6 +100,14 @@ public class Advertisement implements Serializable {
 
     public void setShortDescription(String shortDescription) {
         ShortDescription = shortDescription;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Advertisement(String title, String image) {

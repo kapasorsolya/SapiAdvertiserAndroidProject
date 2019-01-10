@@ -4,6 +4,8 @@ package com.example.orsolya.sapiadveriserandroidproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +44,7 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
     private TextView mPhoneNumber;
     private TextView mLocation;
     private ImageView mImage;
-    private ImageButton mReportButton;
+    private ImageButton mDeleteButton;
     private ImageButton mShareButton;
     private String mIdentifier;
 
@@ -83,7 +87,7 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
         mPhoneNumber = view.findViewById( R.id.txt_phone_number2 );
         mLocation = view.findViewById( R.id.txt_location2 );
         mImage = view.findViewById(R.id.adImage);
-        mReportButton = view.findViewById(R.id.reportButton);
+        mDeleteButton = view.findViewById(R.id.deleteButton);
         mShareButton = view.findViewById( R.id.shareButton );
 
 
@@ -118,6 +122,33 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
                 intent.putExtra( Intent.EXTRA_SUBJECT,shareSubject );
                 intent.putExtra( Intent.EXTRA_TEXT,shareBody );
                 startActivity( Intent.createChooser( intent,"Share using " ) );
+            }
+        } );
+
+        mDeleteButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText( getContext(),"clicked on DELETE BUTTON Your item is deleted",Toast.LENGTH_LONG ).show();
+
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                Fragment myFragment = new MyAdvertismentFragment();
+
+                DeleteAdvertisement(currentAdvertisement);
+
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace( R.id.fragment_container, myFragment, myFragment.getTag() )
+                        .addToBackStack( null )
+                        .commit();
+
+            }
+
+            private void DeleteAdvertisement(Advertisement currentAdvertisement) {
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference ref = database.getReference("advertisement");
+
+                ref.child(currentAdvertisement.getIdentifier()).child("deleted").setValue(true);
             }
         } );
 

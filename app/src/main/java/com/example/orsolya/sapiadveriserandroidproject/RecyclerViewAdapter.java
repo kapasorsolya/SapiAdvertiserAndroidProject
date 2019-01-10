@@ -63,6 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         holder.advertisementTitle.setText(list.get(position).getTitle());
         holder.counter.setText( String.valueOf(  list.get( position ).getViewersNumber() ));
+        holder.hide(list.get( position ).isDeleted());
         Glide.with(holder.itemView.getContext())
                 .asBitmap()
                 .load(list.get(position).getImage())
@@ -133,7 +134,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         }
-
+        public void hide(boolean hide) {
+            itemView.setVisibility(hide ? View.INVISIBLE : View.VISIBLE);
+        }
 
         @Override
         public void onClick(View v) {

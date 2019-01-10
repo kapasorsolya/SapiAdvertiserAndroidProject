@@ -59,7 +59,7 @@ public class SignInActivity extends Activity {
         findViewById(R.id.buttonGetVerificationCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //hogyha valaki nem regisztralt akkor ne engedje hogy bejelentkezzen
                 myRef.child(editTextPhone.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -72,7 +72,7 @@ public class SignInActivity extends Activity {
                         }
                         else
                         {
-                            sendVerificationCode();
+                            sendVerificationCode(); // ellenorzo kodot kuldd sms-ben
                             findViewById(R.id.buttonSignIn).setEnabled(true);
                         }
 

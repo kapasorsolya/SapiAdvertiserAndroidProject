@@ -20,6 +20,12 @@ public class Advertisement implements Serializable {
     private String UploaderPhoneNumber;
     private int viewersNumber;
 
+    public Advertisement(String location, String longDescription, String shortDescription, String phoneNumber) {
+        Location = location;
+        LongDescription = longDescription;
+        ShortDescription = shortDescription;
+        PhoneNumber = phoneNumber;
+    }
 
     public Advertisement(String title, String image, String shortDescription) {
         this.Title = title;

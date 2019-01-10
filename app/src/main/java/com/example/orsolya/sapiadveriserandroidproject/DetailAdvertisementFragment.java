@@ -23,10 +23,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.orsolya.sapiadveriserandroidproject.Models.Advertisement;
+import com.example.orsolya.sapiadveriserandroidproject.Models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -48,7 +52,7 @@ public class DetailAdvertisementFragment extends Fragment {
     private ImageButton mShareButton;
     private String mIdentifier;
     private CircleImageView mUploader;
-
+    private  TextView mCreatorName;
     private static final String TAG = "DetailAdvertisementFragment";
 
     private Advertisement currentAdvertisement;
@@ -63,18 +67,6 @@ public class DetailAdvertisementFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view=inflater.inflate( R.layout.fragment_detail_advertisement, container, false );
 
-        //hide navigation bar
-        //View decorView = getActivity().getWindow().getDecorView();
-        // Hide both the navigation bar and the status bar.
-        // SYSTEM_UI_FLAG_FULLSCREEN is only available on Android 4.1 and higher, but as
-        // a general rule, you should design your app to hide the status bar whenever you
-        // hide the navigation bar.
-        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        //decorView.setSystemUiVisibility(uiOptions);
-
-        //.findViewById(R.id.navigation) ;
-        //button_navigation.setVisibility(View.INVISIBLE);
-       // inflater.g
         ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.INVISIBLE);
 
         //get the passed data
@@ -97,8 +89,10 @@ public class DetailAdvertisementFragment extends Fragment {
         mReportButton = view.findViewById(R.id.reportButton);
         mShareButton = view.findViewById( R.id.shareButton );
         mUploader = view.findViewById( R.id.userProfileImage2 );
+        mCreatorName = view.findViewById( R.id.CreatorTextView );
 
 
+        updateCreatorField(getArguments().getString("uploaderPhoneNumber"));
         //create a new instance and building an advertisement model
         currentAdvertisement = new Advertisement();
 
@@ -156,6 +150,28 @@ public class DetailAdvertisementFragment extends Fragment {
         return view;
     }
 
+    private void updateCreatorField(String uploaderPhoneNumber) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference( "users/" );
+
+        myRef.child( uploaderPhoneNumber ).addValueEventListener( new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue( User.class );
+
+                mCreatorName.setText(user.getFirstName() + ' ' + user.getLastName());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w( "tmz", "Failed to read value.", error.toException() );
+            }
+        } );
+    }
+
     private void setCurrentAdvertisementItem(String titleText, String longDescriptionText, String shortDescriptionText, String locationText,
                                              String phoneNumberText, String imageNameText, String mIdentifier) {
 
@@ -170,6 +186,8 @@ public class DetailAdvertisementFragment extends Fragment {
 
 
     }
+
+
 
     @Override
     public void onPause() {

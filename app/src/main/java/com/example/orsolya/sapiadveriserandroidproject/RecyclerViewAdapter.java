@@ -57,7 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: called.");
 
         final Advertisement item = getItem(position);
-        Log.d("ADVERTISEMENT ITEM",item.toString());
+        Log.d(TAG ,item.toString());
 
         getCurrentUploaderImage( list.get(position).getUploaderPhoneNumber(),position,holder );
 
@@ -80,7 +80,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
          FirebaseDatabase database = FirebaseDatabase.getInstance();
          DatabaseReference myRef = database.getReference("users/");
 
-        myRef.child(uploaderPhoneNumber).addValueEventListener(new ValueEventListener() {
+        myRef.child(uploaderPhoneNumber).addListenerForSingleValueEvent(
+                new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -135,7 +136,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         }
         public void hide(boolean hide) {
-            itemView.setVisibility(hide ? View.INVISIBLE : View.VISIBLE);
+            itemView.setVisibility(hide ? View.GONE : View.VISIBLE);
         }
 
         @Override
@@ -145,20 +146,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             updateViewersNumber( list,v );
             AppCompatActivity activity = (AppCompatActivity) v.getContext();
             Fragment myFragment = new DetailAdvertisementFragment();
-            /*if (((AppCompatActivity) v.getContext()).getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                Fragment f = ((AppCompatActivity) v.getContext()).getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                if (f instanceof ListingAdsFragment) {
-                    // Do something
-                    Log.d( TAG,"EZ egy LISTING FRAGMENT" );
-                }
-                else
-                {
-                    if (f instanceof MyAdvertismentFragment) {
-                        // Do something
-                        Log.d( TAG,"EZ egy My LISTING FRAGMENT" );
-                    }
-                }
-            }*/
 
             // building the message that I will send to the DetailAdvertismentPage
 
@@ -169,7 +156,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             bundle.putString( "location", list.get( getLayoutPosition() ).getLocation() );
             bundle.putString( "imageName", list.get( getLayoutPosition() ).getImage() );
             bundle.putString( "identifier", list.get( getLayoutPosition() ).getIdentifier() );
-
+            bundle.putString( "uploaderPhoneNumber", list.get( getLayoutPosition() ).getUploaderPhoneNumber() );
 
             // set Fragmentclass Arguments
             myFragment.setArguments( bundle );

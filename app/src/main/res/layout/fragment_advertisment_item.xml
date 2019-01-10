@@ -5,7 +5,8 @@
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp">
+    android:padding="15dp"
+    android:visibility="visible">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,6 +28,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:scaleType="fitXY"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,6 +49,7 @@
             android:layout_marginRight="28dp"
             android:layout_marginBottom="8dp"
             android:src="@android:drawable/sym_def_app_icon"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/ad_title"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +67,7 @@
             android:text="Canada"
             android:textColor="#000"
             android:textSize="17sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/detail"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -85,6 +89,7 @@
             android:textColor="#000"
             android:textColorLink="@color/colorPrimary"
             android:textSize="17sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.28"
@@ -97,6 +102,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginBottom="8dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/detail"
             app:srcCompat="@drawable/ic_action_name" />
@@ -109,6 +115,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:text="0"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView5" />

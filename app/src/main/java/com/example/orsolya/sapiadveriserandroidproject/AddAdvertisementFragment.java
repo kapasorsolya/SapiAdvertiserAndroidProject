@@ -51,7 +51,7 @@ import static android.support.constraint.Constraints.TAG;
 public class AddAdvertisementFragment extends Fragment {
 
     private static final int RESULT_OK =-1 ;
-    private static final String TAG = "AddAdvertisementFragment";
+    private static final String TAG = "AddAdvertisementFragmen";
     private EditText Title;
     private EditText ShortDescription;
     private EditText LongDescription;

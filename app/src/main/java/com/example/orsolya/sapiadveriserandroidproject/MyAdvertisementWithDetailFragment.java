@@ -63,7 +63,8 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
 
         View view=  inflater.inflate( R.layout.fragment_my_advertisement_with_detail, container, false );
 
-
+        //bottomnavigation set invisible
+        ((MainActivity)getActivity()).findViewById(R.id.navigation).setVisibility(View.INVISIBLE);
 
         //get the passed data
         String titleText = getArguments().getString("title");
@@ -165,8 +166,7 @@ public class MyAdvertisementWithDetailFragment extends Fragment {
         ref.child("location").setValue(location);
         ref.child("phoneNumber").setValue(phoneNumber);
 
-
-
-
     }
+
+
 }
